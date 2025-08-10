@@ -13,6 +13,15 @@ const leadSchema = z.object({
   goals: z.string().optional(),
   message: z.string().min(10),
   source: z.string().optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
+  utmTerm: z.string().optional(),
+  referrer: z.string().optional(),
+  userAgent: z.string().optional(),
+  pagePath: z.string().optional(),
+  submittedAt: z.coerce.date().optional(),
 });
 
 export const leadRouter = createTRPCRouter({

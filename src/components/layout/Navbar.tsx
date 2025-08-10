@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/Container";
+import { CTA } from "@/components/ui/CTA";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -138,7 +139,8 @@ export function Navbar() {
   return (
     <header className="bg-surface-80 supports-[backdrop-filter]:bg-surface-60 sticky top-0 z-40 w-full border-b backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="text-lg font-semibold text-neutral-900">
+        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-neutral-900">
+          <span className="inline-block h-6 w-6 rounded bg-brand-600" aria-hidden />
           AI Consulate Advisory
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -152,6 +154,7 @@ export function Navbar() {
             </Link>
           ))}
           <ThemeToggle />
+          <CTA href="/contact" size="sm" className="ml-2" label="Contact us" />
         </nav>
         <button
           aria-label="Toggle menu"
@@ -188,8 +191,9 @@ export function Navbar() {
                 {n.label}
               </Link>
             ))}
-            <div className="px-2 py-1">
+            <div className="px-2 py-2 flex items-center justify-between">
               <ThemeToggle />
+              <CTA href="/contact" size="sm" onClick={() => setOpen(false)} label="Contact us" />
             </div>
           </Container>
         </div>

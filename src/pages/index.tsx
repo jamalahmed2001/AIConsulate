@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { NextSeo, OrganizationJsonLd } from "next-seo";
 import { Hero } from "@/components/layout/Hero";
 import { Section } from "@/components/ui/Section";
@@ -11,8 +10,10 @@ import { EnhancedPricingTable } from "@/components/ui/EnhancedPricingTable";
 import { Reveal } from "@/components/ui/Reveal";
 import { Modal } from "@/components/ui/Modal";
 import { useState } from "react";
+import { CTA } from "@/components/ui/CTA";
 
 export default function Home() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const [activeService, setActiveService] = useState<number | null>(null);
 
   const services = [
@@ -319,27 +320,17 @@ export default function Home() {
         </Section>
 
         {/* Final CTA */}
-        <Section className="bg-gradient-to-br from-brand-600 to-brand-700 text-white border-0">
+        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
             <h2 className="mb-4 text-3xl font-bold">
               Ready to ship AI that actually works?
           </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-brand-100">
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">
               No lengthy sales cycles. No vague promises. Just a conversation about your goals and how we can help you achieve them.
           </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="/contact"
-                className="rounded-[var(--radius-md)] bg-white px-8 py-4 text-lg font-semibold text-brand-700 shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-          >
-            Start the conversation
-          </Link>
-              <Link
-                href="/case-studies"
-                className="rounded-[var(--radius-md)] border-2 border-white/30 px-8 py-4 text-lg font-semibold text-white transition-all duration-200 hover:bg-white/10"
-              >
-                See case studies
-              </Link>
+              <CTA href="/contact" size="lg" label="Start the conversation" />
+              <CTA href="/case-studies" size="lg" tone="secondary" label="See case studies" />
             </div>
           </Reveal>
         </Section>
@@ -362,9 +353,9 @@ export default function Home() {
 
       <OrganizationJsonLd
         type="Organization"
-        id="https://your-agency.example/#organization"
+        id={`${siteUrl}/#organization`}
         name="AI Consulate Advisory"
-        url="https://your-agency.example"
+        url={siteUrl}
         sameAs={[]}
         slogan="Build with AI, ship outcomes."
       />

@@ -1,10 +1,12 @@
 import { NextSeo } from "next-seo";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { Section } from "@/components/ui/Section";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Reveal } from "@/components/ui/Reveal";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CTA } from "@/components/ui/CTA";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -13,6 +15,15 @@ const schema = z.object({
   budget: z.string().optional(),
   goals: z.string().optional(),
   message: z.string().min(10),
+  // spam/metadata
+  website: z.string().optional(),
+  submittedAt: z.string().optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
+  utmTerm: z.string().optional(),
+  pagePath: z.string().optional(),
 });
 
 export default function ContactPage() {
@@ -23,15 +34,39 @@ export default function ContactPage() {
     budget: "",
     goals: "",
     message: "",
+    website: "",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmContent: "",
+    utmTerm: "",
+    pagePath: "",
   });
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [error, setError] = useState<string | null>(null);
 
+  // Capture UTM and page path on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setValues((v) => ({
+      ...v,
+      utmSource: params.get("utm_source") ?? v.utmSource ?? "",
+      utmMedium: params.get("utm_medium") ?? v.utmMedium ?? "",
+      utmCampaign: params.get("utm_campaign") ?? v.utmCampaign ?? "",
+      utmContent: params.get("utm_content") ?? v.utmContent ?? "",
+      utmTerm: params.get("utm_term") ?? v.utmTerm ?? "",
+      pagePath: window.location.pathname,
+    }));
+  }, []);
+
+  const nowIso = useMemo(() => new Date().toISOString(), []);
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse(values);
+    const parsed = schema.safeParse({ ...values, submittedAt: nowIso });
     if (!parsed.success) {
       setError("Please fix validation errors.");
       return;
@@ -53,6 +88,13 @@ export default function ContactPage() {
         budget: "",
         goals: "",
         message: "",
+        website: "",
+        utmSource: "",
+        utmMedium: "",
+        utmCampaign: "",
+        utmContent: "",
+        utmTerm: "",
+        pagePath: values.pagePath ?? "",
       });
     } catch {
       setStatus("error");
@@ -71,15 +113,26 @@ export default function ContactPage() {
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section
+        <PageHeader
           title="Contact"
           subtitle="Tell us where you want to be in 90 days. We'll reply within one business day."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+        />
+        <Section className="bg-white">
           <div className="grid gap-12 lg:grid-cols-2">
             {/* Contact Form */}
             <Reveal>
-              <form onSubmit={onSubmit} className="space-y-4">
+              <form onSubmit={onSubmit} className="space-y-4" noValidate>
+            {/* Honeypot */}
+            <input
+              type="text"
+              name="website"
+              autoComplete="off"
+              tabIndex={-1}
+              value={values.website}
+              onChange={(e) => setValues((v) => ({ ...v, website: e.currentTarget.value }))}
+              className="hidden"
+            />
             <div>
               <label className="mb-1 block text-sm font-medium">Name</label>
               <Input
@@ -151,13 +204,21 @@ export default function ContactPage() {
                 rows={5}
               />
             </div>
-            <button
+            {/* UTM hidden fields to include in POST body */}
+            <input type="hidden" name="utm_source" value={values.utmSource} readOnly />
+            <input type="hidden" name="utm_medium" value={values.utmMedium} readOnly />
+            <input type="hidden" name="utm_campaign" value={values.utmCampaign} readOnly />
+            <input type="hidden" name="utm_content" value={values.utmContent} readOnly />
+            <input type="hidden" name="utm_term" value={values.utmTerm} readOnly />
+            <input type="hidden" name="pagePath" value={values.pagePath} readOnly />
+            <CTA
               type="submit"
+              size="md"
               disabled={status === "submitting"}
-              className="bg-brand-700 hover:bg-brand-800 rounded-[var(--radius-md)] px-4 py-2 text-white disabled:opacity-50"
+              className="inline-flex"
             >
               {status === "submitting" ? "Submitting..." : "Send message"}
-            </button>
+            </CTA>
             {error && <p className="text-sm text-red-600">{error}</p>}
             {status === "success" && (
               <p className="text-sm text-green-600">

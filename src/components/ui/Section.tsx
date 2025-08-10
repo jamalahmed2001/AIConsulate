@@ -20,11 +20,11 @@ export function Section({
 }: SectionProps) {
   return (
     <section id={id} className={`border-t bg-white ${className}`}>
-      <Container className={`py-16 ${containerClassName}`}>
+      <Container className={`py-20 ${containerClassName}`}>
         {(title ?? subtitle) && (
           <Reveal className="mb-8 text-center">
             {typeof title === "string" ? (
-              <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">{title}</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">{title}</h2>
             ) : (
               title
             )}

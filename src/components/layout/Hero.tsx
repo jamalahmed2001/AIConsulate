@@ -1,8 +1,8 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { CTA } from "@/components/ui/CTA";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -36,15 +36,15 @@ export function Hero() {
           transition: "transform 100ms linear, filter 100ms linear",
         }}
       />
-      <Container className="py-28 text-center" >
+      <Container className="py-32 text-center" >
         <div ref={containerRef}>
           <Reveal>
-            <div className="border-brand-200 text-brand-700 mx-auto mb-4 w-fit rounded-full border bg-white/70 px-3 py-1 text-xs shadow-sm backdrop-blur">
+            <div className="mx-auto mb-4 w-fit rounded-full glass px-3 py-1 text-xs shadow-sm text-neutral-700 dark:text-neutral-200">
               Trusted AI delivery for teams that ship
             </div>
           </Reveal>
           <Reveal delayMs={80}>
-            <h1 className="mb-4 text-5xl font-extrabold tracking-tight">
+            <h1 className="mb-4 text-6xl font-extrabold tracking-tight">
               Build with AI, ship outcomes.
             </h1>
           </Reveal>
@@ -55,19 +55,9 @@ export function Hero() {
             </p>
           </Reveal>
           <Reveal delayMs={220}>
-            <div className="flex items-center justify-center gap-3">
-              <Link
-                href="/contact"
-                className="bg-brand-700 hover:bg-brand-800 rounded-[var(--radius-md)] px-5 py-3 text-white shadow-[var(--shadow-soft)]"
-              >
-                Talk to us
-              </Link>
-              <Link
-                href="/services"
-                className="rounded-[var(--radius-md)] border border-neutral-300 bg-white px-5 py-3 text-neutral-900 shadow-[var(--shadow-soft)] hover:bg-neutral-50"
-              >
-                Explore services
-              </Link>
+            <div className="flex items-center justify-center gap-4">
+              <CTA href="/contact" size="lg" tone="primary" label="Talk to us" />
+              <CTA href="/services" size="lg" tone="secondary" label="Explore services" />
             </div>
           </Reveal>
         </div>

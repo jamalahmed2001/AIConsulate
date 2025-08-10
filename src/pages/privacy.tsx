@@ -1,6 +1,7 @@
 import { NextSeo } from "next-seo";
 import { Section } from "@/components/ui/Section";
 import { Prose } from "@/components/ui/Prose";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default function PrivacyPage() {
   return (
@@ -14,11 +15,12 @@ export default function PrivacyPage() {
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section 
-          title="Privacy Policy" 
+        <PageHeader
+          title="Privacy Policy"
           subtitle="How we collect, use, and protect your information."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "Privacy" }]}
+        />
+        <Section className="bg-white">
           <Prose>
             <p>
               We respect your privacy and are committed to protecting your personal data. 

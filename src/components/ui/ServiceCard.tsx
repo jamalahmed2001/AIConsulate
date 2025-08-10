@@ -68,23 +68,33 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
           </ul>
           
           {/* CTA */}
-          <div className={`mt-4 flex items-center text-sm font-medium text-brand-600 transition-all duration-300 ${
-            isHovered ? "translate-x-1" : ""
-          }`}>
-            Learn more
-            <svg 
-              className="ml-1 h-4 w-4 transition-transform duration-300" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M9 5l7 7-7 7" 
+          <div className={`mt-6 flex items-center justify-between`}>
+            <div className={`flex items-center text-sm font-medium text-blue-600 transition-all duration-300 ${
+              isHovered ? "translate-x-1" : ""
+            }`}>
+              Learn more
+              <svg 
+                className="ml-1 h-4 w-4 transition-transform duration-300" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M9 5l7 7-7 7" 
+                />
+              </svg>
+            </div>
+            <div className={`rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 p-2 transition-all duration-300 ${
+              isHovered ? "scale-110 shadow-md" : ""
+            }`}>
+              <div 
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: service.color }}
               />
-            </svg>
+            </div>
           </div>
         </div>
       </Card>

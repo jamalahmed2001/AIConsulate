@@ -3,6 +3,8 @@ import { NextSeo } from "next-seo";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { getAllFrontmatters, type MDXFrontmatter } from "@/lib/mdx";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CTA } from "@/components/ui/CTA";
 
 type ExtendedCaseStudy = MDXFrontmatter & {
   industry?: string;
@@ -90,11 +92,12 @@ export default function CaseStudiesIndex({
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section 
-          title="Case Studies" 
+        <PageHeader
+          title="Case Studies"
           subtitle="Real client outcomes. Problem → Approach → Outcome."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "Case Studies" }]}
+        />
+        <Section className="bg-white">
           <Reveal>
             <div className="mx-auto max-w-4xl text-center mb-12">
               <p className="text-lg text-neutral-700 leading-relaxed">
@@ -203,27 +206,17 @@ export default function CaseStudiesIndex({
         </Section>
 
         {/* CTA Section */}
-        <Section className="bg-gradient-to-br from-brand-600 to-brand-700 text-white border-0">
+        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
             <h2 className="mb-4 text-3xl font-bold">
               Ready to create your own success story?
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-brand-100">
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">
               Every case study started with a conversation about business goals and technical challenges.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/contact"
-                className="rounded-[var(--radius-md)] bg-white px-8 py-4 text-lg font-semibold text-brand-700 shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-              >
-                Start the conversation
-              </Link>
-              <Link
-                href="/services"
-                className="rounded-[var(--radius-md)] border-2 border-white/30 px-8 py-4 text-lg font-semibold text-white transition-all duration-200 hover:bg-white/10"
-              >
-                Explore our services
-              </Link>
+              <CTA href="/contact" size="lg" label="Start the conversation" />
+              <CTA href="/services" size="lg" tone="secondary" label="Explore our services" />
             </div>
           </Reveal>
         </Section>

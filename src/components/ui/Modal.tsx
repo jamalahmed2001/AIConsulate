@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { CTA } from "@/components/ui/CTA";
 
 type ModalProps = {
   open: boolean;
@@ -12,6 +13,7 @@ type ModalProps = {
   features?: string[];
   icon?: string;
   color?: string;
+  children?: ReactNode;
 };
 
 export function Modal({
@@ -24,6 +26,7 @@ export function Modal({
   features,
   icon,
   color,
+  children,
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
   const [tab, setTab] = useState<"overview" | "technical">("overview");
@@ -103,28 +106,30 @@ export function Modal({
               </div>
               
               {/* Enhanced Tab Design */}
-              <div className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-neutral-100 p-1">
-                <button
-                  className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    tab === "overview" 
-                      ? "bg-white shadow-sm text-neutral-900" 
-                      : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                  onClick={() => setTab("overview")}
-                >
-                  Overview
-                </button>
-                <button
-                  className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    tab === "technical" 
-                      ? "bg-white shadow-sm text-neutral-900" 
-                      : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                  onClick={() => setTab("technical")}
-                >
-                  Details
-                </button>
-              </div>
+              {!children && (
+                <div className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-neutral-100 p-1">
+                  <button
+                    className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                      tab === "overview" 
+                        ? "bg-white shadow-sm text-neutral-900" 
+                        : "text-neutral-600 hover:text-neutral-900"
+                    }`}
+                    onClick={() => setTab("overview")}
+                  >
+                    Overview
+                  </button>
+                  <button
+                    className={`rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                      tab === "technical" 
+                        ? "bg-white shadow-sm text-neutral-900" 
+                        : "text-neutral-600 hover:text-neutral-900"
+                    }`}
+                    onClick={() => setTab("technical")}
+                  >
+                    Details
+                  </button>
+                </div>
+              )}
             </div>
             
             <button
@@ -153,7 +158,9 @@ export function Modal({
 
         {/* Content with improved styling */}
         <div className="p-6 min-h-[200px]">
-          {tab === "overview" ? (
+          {children ? (
+            <div className="space-y-4">{children}</div>
+          ) : tab === "overview" ? (
             <div className="space-y-4">
               <p className="text-neutral-700 leading-relaxed">
                 {overview ?? "No overview available."}
@@ -197,29 +204,12 @@ export function Modal({
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="rounded-[var(--radius-md)] border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-white hover:border-neutral-400 transition-colors"
+              className="rounded-xl border-2 border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 hover:border-neutral-400 transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Close
             </button>
             {primaryAction && (
-              <a
-                href={primaryAction.href}
-                className="rounded-[var(--radius-md)] px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:scale-105 shadow-lg"
-                style={{ 
-                  backgroundColor: color ?? 'var(--color-brand-700)',
-                  boxShadow: `0 4px 14px 0 ${color ?? 'var(--color-brand-700)'}25`
-                }}
-                onMouseEnter={(e) => {
-                  const target = e.target as HTMLElement;
-                  target.style.backgroundColor = color ? `${color}dd` : 'var(--color-brand-800)';
-                }}
-                onMouseLeave={(e) => {
-                  const target = e.target as HTMLElement;
-                  target.style.backgroundColor = color ?? 'var(--color-brand-700)';
-                }}
-              >
-                {primaryAction.label}
-              </a>
+              <CTA href={primaryAction.href} size="md" label={primaryAction.label} />
             )}
           </div>
         </div>

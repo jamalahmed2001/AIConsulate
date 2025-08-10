@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 declare global {
   interface Window {
@@ -339,11 +340,12 @@ export default function AIPlaygroundPage() {
       />
 
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section
+        <PageHeader
           title="AI Playground"
           subtitle="All demos run client-side in your browser. No server calls for core functionality."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "AI" }]}
+        />
+        <Section className="bg-white">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card title="Summarization (extractive)">
               <div className="space-y-3">

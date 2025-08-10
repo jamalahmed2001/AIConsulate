@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { NextSeo } from "next-seo";
 import { Section } from "@/components/ui/Section";
 import { ServiceCard } from "@/components/ui/ServiceCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Modal } from "@/components/ui/Modal";
 import { useState } from "react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CTA } from "@/components/ui/CTA";
 
 export default function ServicesPage() {
   const [activeService, setActiveService] = useState<number | null>(null);
@@ -107,11 +108,12 @@ export default function ServicesPage() {
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section
+        <PageHeader
           title="Services"
           subtitle="Strategy, automation, and agentic systems delivered end-to-end, with evidence before scale."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
+        />
+        <Section className="bg-white">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, idx) => (
               <Reveal key={service.title} delayMs={idx * 100}>
@@ -155,27 +157,17 @@ export default function ServicesPage() {
         </Section>
 
         {/* CTA Section */}
-        <Section className="bg-gradient-to-br from-brand-600 to-brand-700 text-white border-0">
+        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
             <h2 className="mb-4 text-3xl font-bold">
               Ready to discuss your AI roadmap?
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-brand-100">
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">
               Let&apos;s talk about your goals and how we can help you achieve them with measurable AI implementations.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/contact"
-                className="rounded-[var(--radius-md)] bg-white px-8 py-4 text-lg font-semibold text-brand-700 shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-              >
-                Start the conversation
-              </Link>
-              <Link
-                href="/case-studies"
-                className="rounded-[var(--radius-md)] border-2 border-white/30 px-8 py-4 text-lg font-semibold text-white transition-all duration-200 hover:bg-white/10"
-              >
-                See case studies
-              </Link>
+              <CTA href="/contact" size="lg" label="Start the conversation" />
+              <CTA href="/case-studies" size="lg" tone="secondary" label="See case studies" />
             </div>
           </Reveal>
         </Section>

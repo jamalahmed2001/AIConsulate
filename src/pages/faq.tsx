@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { NextSeo } from "next-seo";
+import { NextSeo, FAQPageJsonLd } from "next-seo";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CTA } from "@/components/ui/CTA";
 
 export default function FAQPage() {
   const faqSections = [
@@ -102,11 +103,12 @@ export default function FAQPage() {
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section
+        <PageHeader
           title="Frequently Asked Questions"
           subtitle="Straight answers so you can decide quickly."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
+        />
+        <Section className="bg-white">
           <Reveal>
             <div className="mx-auto max-w-4xl">
               {faqSections.map((section, sectionIdx) => (
@@ -139,18 +141,8 @@ export default function FAQPage() {
                 Every organization has unique requirements. We&apos;re happy to discuss your specific situation and how we can help.
               </p>
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Link
-                  href="/contact"
-                  className="rounded-[var(--radius-md)] bg-brand-700 px-6 py-3 text-white font-semibold hover:bg-brand-800 transition-colors"
-                >
-                  Schedule a call
-                </Link>
-                <Link
-                  href="/case-studies"
-                  className="rounded-[var(--radius-md)] border border-brand-700 px-6 py-3 text-brand-700 font-semibold hover:bg-brand-50 transition-colors"
-                >
-                  See our work
-                </Link>
+                <CTA href="/contact" size="lg" label="Contact us" />
+                <CTA href="/case-studies" size="lg" tone="secondary" label="See our work" />
               </div>
             </div>
           </Reveal>
@@ -183,6 +175,11 @@ export default function FAQPage() {
           </Reveal>
         </Section>
       </main>
+      <FAQPageJsonLd
+        mainEntity={faqSections.flatMap((section) =>
+          section.faqs.map((f) => ({ questionName: f.q, acceptedAnswerText: f.a }))
+        )}
+      />
     </>
   );
 }

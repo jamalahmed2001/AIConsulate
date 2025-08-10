@@ -9,9 +9,9 @@ export const defaultSEO: DefaultSeoProps = {
     site_name: "AI Consulate Advisory",
     images: [
       {
-        url: "/og/default.png",
-        width: 1200,
-        height: 630,
+        url: "/favicon.ico",
+        width: 256,
+        height: 256,
         alt: "AI Consulate Advisory",
       },
     ],

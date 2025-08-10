@@ -1,6 +1,7 @@
 import { NextSeo } from "next-seo";
 import { Section } from "@/components/ui/Section";
 import { Prose } from "@/components/ui/Prose";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default function TermsPage() {
   return (
@@ -14,11 +15,12 @@ export default function TermsPage() {
         }}
       />
       <main className="min-h-screen text-neutral-900 dark:text-neutral-100">
-        <Section 
-          title="Terms of Service" 
+        <PageHeader
+          title="Terms of Service"
           subtitle="Legal terms governing the use of our services."
-          className="bg-white"
-        >
+          crumbs={[{ label: "Home", href: "/" }, { label: "Terms" }]}
+        />
+        <Section className="bg-white">
           <Prose>
             <p>
               These terms govern your use of our website and services. By

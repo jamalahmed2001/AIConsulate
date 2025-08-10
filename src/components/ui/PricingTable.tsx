@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { CTA } from "@/components/ui/CTA";
 
 type Plan = {
   name: string;
@@ -23,12 +23,7 @@ export function PricingTable({ plans }: { plans: Plan[] }) {
               <li key={f}>{f}</li>
             ))}
           </ul>
-          <Link
-            href="/contact"
-            className="bg-brand-700 hover:bg-brand-800 inline-block rounded-[var(--radius-md)] px-4 py-2 text-white"
-          >
-            Get started
-          </Link>
+          <CTA href="/contact" size="md" fullWidth>Get started</CTA>
         </Card>
       ))}
     </div>

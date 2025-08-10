@@ -23,6 +23,15 @@ const leadSchema = z.object({
   goals: z.string().optional(),
   message: z.string().min(10),
   source: z.string().optional(),
+  // spam/metadata
+  website: z.string().optional(), // honeypot
+  submittedAt: z.coerce.date().optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
+  utmTerm: z.string().optional(),
+  pagePath: z.string().optional(),
 });
 
 export default async function handler(
@@ -50,11 +59,34 @@ export default async function handler(
     if (!parsed.success)
       return res.status(400).json({ error: parsed.error.flatten() });
 
-    await db.lead.create({ data: parsed.data });
+    const { website, submittedAt, ...data } = parsed.data;
+
+    // silently drop obvious spam
+    const isSpamHoneypot = website && website.trim().length > 0;
+    const isSpamTiming = submittedAt
+      ? Date.now() - submittedAt.getTime() < 3000
+      : false;
+
+    if (isSpamHoneypot || isSpamTiming) {
+      return res.status(200).json({ ok: true });
+    }
+
+    const referrer = typeof req.headers.referer === "string" ? req.headers.referer : undefined;
+    const userAgent = typeof req.headers["user-agent"] === "string" ? req.headers["user-agent"] : undefined;
+
+    await db.lead.create({
+      data: {
+        ...data,
+        source: data.source ?? "contact",
+        referrer,
+        userAgent,
+        submittedAt: submittedAt ?? new Date(),
+      },
+    });
 
     // Best-effort email notification; do not fail the request if email sending fails
     try {
-      await sendLeadNotification(parsed.data);
+      await sendLeadNotification({ ...data });
     } catch (err) {
       console.error("sendLeadNotification error", err);
     }

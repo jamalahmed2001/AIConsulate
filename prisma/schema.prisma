@@ -86,4 +86,15 @@ model Lead {
     message   String
     source    String?
     handled   Boolean  @default(false)
+    // Marketing attribution
+    utmSource   String?
+    utmMedium   String?
+    utmCampaign String?
+    utmContent  String?
+    utmTerm     String?
+    // Context
+    referrer  String?
+    userAgent String?
+    pagePath  String?
+    submittedAt DateTime?
 }
