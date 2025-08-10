@@ -9,14 +9,24 @@ export function PageHeader({
   subtitle,
   crumbs = [],
   align = "center",
+  tone = "surface",
 }: {
   title: string;
   subtitle?: string;
   crumbs?: Crumb[];
   align?: "left" | "center";
+  tone?: "surface" | "muted" | "contrast" | "transparent";
 }) {
+  const toneClass =
+    tone === "surface"
+      ? "border-b bg-white"
+      : tone === "muted"
+      ? "border-b bg-neutral-50"
+      : tone === "contrast"
+      ? "border-0 gradient-contrast-surface"
+      : "border-0 bg-transparent";
   return (
-    <section className="relative border-b bg-white">
+    <section className={`relative ${toneClass}`}>
       <Container className="py-14">
         <Reveal>
           {crumbs.length > 0 && (

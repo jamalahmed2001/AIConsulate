@@ -97,7 +97,7 @@ export default function CaseStudiesIndex({
           subtitle="Real client outcomes. Problem → Approach → Outcome."
           crumbs={[{ label: "Home", href: "/" }, { label: "Case Studies" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Reveal>
             <div className="mx-auto max-w-4xl text-center mb-12">
               <p className="text-lg text-neutral-700 leading-relaxed">
@@ -111,7 +111,7 @@ export default function CaseStudiesIndex({
             {studies.map((study, idx) => (
               <Reveal key={study.slug} delayMs={idx * 100}>
                 <Link href={`/case-studies/${study.slug}`}>
-                  <div className="group rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)] transition-all duration-200 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="group rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)] transition-all duration-200 hover:scale-[1.02]">
                     {/* Header */}
                     <div className="mb-4">
                       <div className="flex items-start justify-between gap-4">
@@ -177,7 +177,7 @@ export default function CaseStudiesIndex({
         <Section 
           title="By the numbers"
           subtitle="Measurable outcomes across our client engagements."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <Reveal>
             <div className="grid gap-8 md:grid-cols-4">
@@ -206,9 +206,9 @@ export default function CaseStudiesIndex({
         </Section>
 
         {/* CTA Section */}
-        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
+        <Section tone="contrast" className="text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
-            <h2 className="mb-4 text-3xl font-bold">
+            <h2 className="mb-4 text-3xl font-bold text-gradient-brand">
               Ready to create your own success story?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">

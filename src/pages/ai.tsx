@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import { Button } from "@/components/ui/Button";
+import { CTA as Button } from "@/components/ui/CTA";
 import { PageHeader } from "@/components/ui/PageHeader";
 
 declare global {
@@ -345,7 +345,7 @@ export default function AIPlaygroundPage() {
           subtitle="All demos run client-side in your browser. No server calls for core functionality."
           crumbs={[{ label: "Home", href: "/" }, { label: "AI" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Card title="Summarization (extractive)">
               <div className="space-y-3">
@@ -386,7 +386,7 @@ export default function AIPlaygroundPage() {
                   onChange={(e) => setText(e.target.value)}
                 />
                 <div className="flex items-center gap-3">
-                  <Button variant="secondary" onClick={generateKeywords}>
+                  <Button tone="secondary" onClick={generateKeywords}>
                     Extract
                   </Button>
                 </div>
@@ -449,7 +449,7 @@ export default function AIPlaygroundPage() {
                   {!ttsSpeaking ? (
                     <Button onClick={speak}>Speak</Button>
                   ) : (
-                    <Button variant="secondary" onClick={stopSpeak}>
+                    <Button tone="secondary" onClick={stopSpeak}>
                       Stop
                     </Button>
                   )}
@@ -470,7 +470,7 @@ export default function AIPlaygroundPage() {
                       Start
                     </Button>
                   ) : (
-                    <Button variant="secondary" onClick={stopListening}>
+                    <Button tone="secondary" onClick={stopListening}>
                       Stop
                     </Button>
                   )}
@@ -494,7 +494,7 @@ export default function AIPlaygroundPage() {
                     {mobilenetReady ? "Model loaded" : "Load model"}
                   </Button>
                   <Button
-                    variant="secondary"
+                    tone="secondary"
                     onClick={classifyImage}
                     disabled={!mobilenetReady || !imagePreview}
                   >
@@ -551,7 +551,7 @@ export default function AIPlaygroundPage() {
                     {toxicityReady ? "Model loaded" : "Load model"}
                   </Button>
                   <Button
-                    variant="secondary"
+                    tone="secondary"
                     onClick={runToxicity}
                     disabled={!toxicityReady || !toxInput.trim()}
                   >

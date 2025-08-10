@@ -20,7 +20,7 @@ export default function PrivacyPage() {
           subtitle="How we collect, use, and protect your information."
           crumbs={[{ label: "Home", href: "/" }, { label: "Privacy" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Prose>
             <p>
               We respect your privacy and are committed to protecting your personal data. 

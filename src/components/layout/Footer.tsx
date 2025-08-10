@@ -20,17 +20,17 @@ export function Footer() {
             <div>
               <div className="mb-2 text-xs font-bold uppercase text-neutral-500">Company</div>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/about" className="hover:text-black">About</Link></li>
-                <li><Link href="/services" className="hover:text-black">Services</Link></li>
-                <li><Link href="/case-studies" className="hover:text-black">Case Studies</Link></li>
-                <li><Link href="/pricing" className="hover:text-black">Pricing</Link></li>
+                <li><Link href="/about" className="hover:text-brand-700">About</Link></li>
+                <li><Link href="/services" className="hover:text-brand-700">Services</Link></li>
+                <li><Link href="/case-studies" className="hover:text-brand-700">Case Studies</Link></li>
+                <li><Link href="/pricing" className="hover:text-brand-700">Pricing</Link></li>
               </ul>
             </div>
             <div>
               <div className="mb-2 text-xs font-bold uppercase text-neutral-500">Legal</div>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/privacy" className="hover:text-black">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-black">Terms</Link></li>
+                <li><Link href="/privacy" className="hover:text-brand-700">Privacy</Link></li>
+                <li><Link href="/terms" className="hover:text-brand-700">Terms</Link></li>
               </ul>
             </div>
           </div>

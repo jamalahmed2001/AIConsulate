@@ -55,7 +55,7 @@ export default function CaseStudy({
         />
 
         {/* Content */}
-        <Section className="bg-white">
+        <Section tone="surface">
           <Reveal>
             <div className="max-w-4xl">
               <Prose>
@@ -66,7 +66,7 @@ export default function CaseStudy({
         </Section>
 
         {/* Related Actions */}
-        <Section className="bg-neutral-50">
+        <Section tone="muted">
           <Reveal>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold mb-4">Interested in similar results?</h2>

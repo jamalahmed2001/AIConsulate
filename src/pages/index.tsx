@@ -7,6 +7,7 @@ import { ServiceCard } from "@/components/ui/ServiceCard";
 import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
 import { TestimonialSlider } from "@/components/ui/TestimonialSlider";
 import { EnhancedPricingTable } from "@/components/ui/EnhancedPricingTable";
+import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/ui/Reveal";
 import { Modal } from "@/components/ui/Modal";
 import { useState } from "react";
@@ -225,14 +226,14 @@ export default function Home() {
         <Hero />
 
         {/* Social Proof */}
-        <Section className="border-t bg-white">
+        <Section tone="surface">
           <Reveal>
             <LogoCloud />
           </Reveal>
         </Section>
 
         {/* Stats */}
-        <Section className="bg-neutral-50">
+        <Section tone="muted">
           <Reveal>
             <StatsGrid stats={stats} />
           </Reveal>
@@ -242,11 +243,11 @@ export default function Home() {
         <Section 
           title="What we do" 
           subtitle="AI that integrates seamlessly with your existing systems and processes."
-          className="bg-white"
+          tone="surface"
         >
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:grid-rows-3 lg:grid-rows-2">
             {services.map((service, idx) => (
-              <Reveal key={service.title} delayMs={idx * 100}>
+              <Reveal key={service.title} delayMs={idx * 100} className="h-full">
                 <ServiceCard 
                   service={service} 
                   onClick={() => setActiveService(idx)}
@@ -260,7 +261,7 @@ export default function Home() {
         <Section 
           title="How we work" 
           subtitle="Evidence before scale. Demos every week. No heroics required."
-          className="bg-white"
+          tone="surface"
         >
           <ProcessTimeline steps={processSteps} />
         </Section>
@@ -269,7 +270,7 @@ export default function Home() {
         <Section 
           title="Results that matter"
           subtitle="Real problems solved. Measurable outcomes delivered."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <TestimonialSlider testimonials={testimonials} />
         </Section>
@@ -278,7 +279,7 @@ export default function Home() {
         <Section
           title="Simple, transparent pricing"
           subtitle="Choose the engagement that matches where you are in your AI journey."
-          className="bg-white"
+          tone="surface"
         >
           <Reveal className="mx-auto mb-8 max-w-3xl text-center">
             <p className="text-sm text-neutral-700">
@@ -289,7 +290,7 @@ export default function Home() {
 
           {/* What's included */}
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">What’s included</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li>• Dedicated lead with weekly demos</li>
@@ -298,8 +299,8 @@ export default function Home() {
                 <li>• Observability and evaluator suites</li>
                 <li>• Documentation and handover</li>
               </ul>
-            </div>
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            </Card>
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">Guarantees</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li>• No lock‑in: your code, your infra</li>
@@ -307,22 +308,22 @@ export default function Home() {
                 <li>• Plain‑English dashboards and metrics</li>
                 <li>• No surprise fees</li>
               </ul>
-            </div>
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            </Card>
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">Common questions</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li><strong>Security?</strong> We align with your policies and least‑privilege by default.</li>
                 <li><strong>Data?</strong> We keep PII mapped, masked, and versioned across systems.</li>
                 <li><strong>Timeline?</strong> First demo in week one; measurable pilot by week four.</li>
               </ul>
-            </div>
+            </Card>
           </div>
         </Section>
 
         {/* Final CTA */}
-        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
+        <Section tone="contrast" className="text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
-            <h2 className="mb-4 text-3xl font-bold">
+            <h2 className="mb-4 text-3xl font-bold text-gradient-brand">
               Ready to ship AI that actually works?
           </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">

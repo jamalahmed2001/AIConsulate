@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { StatsGrid } from "@/components/ui/StatsGrid";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { CTA } from "@/components/ui/CTA";
+import { Card } from "@/components/ui/Card";
 
 export default function AboutPage() {
   const principles = [
@@ -77,7 +78,7 @@ export default function AboutPage() {
           subtitle="We design and ship AI that stands up to production and scrutiny."
           crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center mb-12">
               <p className="text-lg text-neutral-700 leading-relaxed">
@@ -90,19 +91,19 @@ export default function AboutPage() {
           <div className="grid gap-8 md:grid-cols-3 mb-16">
             {principles.map((principle, idx) => (
               <Reveal key={principle.title} delayMs={idx * 100}>
-                <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)] text-center">
+                <Card className="text-center">
                   <div className="text-4xl mb-4">{principle.icon}</div>
                   <h3 className="text-xl font-semibold mb-2">{principle.title}</h3>
                   <p className="text-brand-600 font-medium mb-3">{principle.description}</p>
                   <p className="text-sm text-neutral-700">{principle.details}</p>
-                </div>
+                </Card>
               </Reveal>
             ))}
           </div>
         </Section>
 
         {/* Stats */}
-        <Section className="bg-neutral-50">
+        <Section tone="muted">
           <Reveal>
             <StatsGrid stats={stats} />
           </Reveal>
@@ -112,15 +113,15 @@ export default function AboutPage() {
         <Section 
           title="Our expertise"
           subtitle="Deep experience across the AI stack, from strategy to production operations."
-          className="bg-white"
+          tone="surface"
         >
           <div className="grid gap-6 md:grid-cols-2">
             {expertise.map((item, idx) => (
               <Reveal key={item.area} delayMs={idx * 100}>
-                <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+                <Card>
                   <h3 className="text-lg font-semibold mb-3">{item.area}</h3>
                   <p className="text-sm text-neutral-700">{item.description}</p>
-                </div>
+                </Card>
               </Reveal>
             ))}
           </div>
@@ -130,7 +131,7 @@ export default function AboutPage() {
         <Section 
           title="How we work"
           subtitle="Disciplined process, transparent communication, measurable outcomes."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <Reveal>
             <div className="grid gap-8 md:grid-cols-2">
@@ -173,31 +174,31 @@ export default function AboutPage() {
                 <h3 className="text-xl font-semibold mb-4">What sets us apart</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-brand-600">✓</span>
                     <div>
                       <strong>Production focus:</strong> We build for Monday morning, not demo day.
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-brand-600">✓</span>
                     <div>
                       <strong>Evidence-based:</strong> Evaluator suites, A/B tests, and measurable KPIs drive decisions.
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-brand-600">✓</span>
                     <div>
                       <strong>Security first:</strong> RBAC, audit trails, and compliance built in from day one.
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-brand-600">✓</span>
                     <div>
                       <strong>Team enablement:</strong> We leave you with knowledge, not dependencies.
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-brand-600">✓</span>
                     <div>
                       <strong>Transparent delivery:</strong> Weekly demos, decision logs, and clear communication.
                     </div>
@@ -209,9 +210,9 @@ export default function AboutPage() {
         </Section>
 
         {/* CTA Section */}
-        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
+        <Section tone="contrast" className="text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
-            <h2 className="mb-4 text-3xl font-bold">
+            <h2 className="mb-4 text-3xl font-bold text-gradient-brand">
               Ready to work with experienced AI practitioners?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">

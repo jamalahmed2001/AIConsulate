@@ -4,6 +4,7 @@ import { EnhancedPricingTable } from "@/components/ui/EnhancedPricingTable";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { CTA } from "@/components/ui/CTA";
+import { Card } from "@/components/ui/Card";
 
 export default function PricingPage() {
   const pricingPlans = [
@@ -72,7 +73,7 @@ export default function PricingPage() {
           subtitle="Transparent models. Value over hours. Start where it makes sense."
           crumbs={[{ label: "Home", href: "/" }, { label: "Pricing" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Reveal className="mx-auto mb-8 max-w-3xl text-center">
             <p className="text-sm text-neutral-700">
               Every engagement includes a clear definition of success, a crisp risk register, and weekly demos. We measure accuracy, latency, and cost so you have evidence before you scale.
@@ -82,7 +83,7 @@ export default function PricingPage() {
 
           {/* What's included */}
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">What&apos;s included</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li>• Dedicated lead with weekly demos</li>
@@ -91,8 +92,8 @@ export default function PricingPage() {
                 <li>• Observability and evaluator suites</li>
                 <li>• Documentation and handover</li>
               </ul>
-            </div>
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            </Card>
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">Guarantees</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li>• No lock‑in: your code, your infra</li>
@@ -100,15 +101,15 @@ export default function PricingPage() {
                 <li>• Plain‑English dashboards and metrics</li>
                 <li>• No surprise fees</li>
               </ul>
-            </div>
-            <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+            </Card>
+            <Card>
               <h3 className="mb-2 text-lg font-semibold">Common questions</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li><strong>Security?</strong> We align with your policies and least‑privilege by default.</li>
                 <li><strong>Data?</strong> We keep PII mapped, masked, and versioned across systems.</li>
                 <li><strong>Timeline?</strong> First demo in week one; measurable pilot by week four.</li>
               </ul>
-            </div>
+            </Card>
           </div>
         </Section>
 
@@ -116,7 +117,7 @@ export default function PricingPage() {
         <Section 
           title="Frequently asked questions"
           subtitle="Clear answers to help you make the right decision."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <Reveal>
             <div className="grid gap-8 md:grid-cols-2">
@@ -171,9 +172,9 @@ export default function PricingPage() {
         </Section>
 
         {/* CTA Section */}
-        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
+        <Section tone="contrast" className="text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
-            <h2 className="mb-4 text-3xl font-bold">
+            <h2 className="mb-4 text-3xl font-bold text-gradient-brand">
               Ready to discuss pricing for your project?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">

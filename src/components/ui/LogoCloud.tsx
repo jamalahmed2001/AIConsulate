@@ -81,10 +81,10 @@ export function LogoCloud({
               <Reveal key={brand.name} delayMs={idx * 60}>
                 <Link 
                   href={`/case-studies/${brand.slug}`}
-                  className="group flex flex-col h-16 items-center justify-center rounded-lg glass text-xs font-medium text-neutral-800 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-300 dark:text-neutral-200"
+                  className="group flex flex-col h-16 items-center justify-center rounded-lg glass text-xs font-medium text-neutral-800 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-brand-500/20 hover:border-brand-300 dark:text-neutral-200"
                   title={`View ${brand.name} case study`}
                 >
-                  <div className="font-bold text-neutral-900 group-hover:text-blue-500 dark:text-neutral-100 dark:group-hover:text-blue-400 transition-colors">
+                  <div className="font-bold text-neutral-900 group-hover:text-brand-600 dark:text-neutral-100 dark:group-hover:text-brand-400 transition-colors">
                     {brand.name}
                   </div>
                   <div className="text-[10px] text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-colors">

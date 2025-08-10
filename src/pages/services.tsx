@@ -113,7 +113,7 @@ export default function ServicesPage() {
           subtitle="Strategy, automation, and agentic systems delivered end-to-end, with evidence before scale."
           crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, idx) => (
               <Reveal key={service.title} delayMs={idx * 100}>
@@ -130,7 +130,7 @@ export default function ServicesPage() {
         <Section 
           title="How we deliver"
           subtitle="Evidence before scale. Demos every week. No heroics required."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <Reveal>
             <div className="grid gap-6 md:grid-cols-3">
@@ -157,9 +157,9 @@ export default function ServicesPage() {
         </Section>
 
         {/* CTA Section */}
-        <Section className="border-0 gradient-contrast-surface text-neutral-900 dark:text-neutral-100">
+        <Section tone="contrast" className="text-neutral-900 dark:text-neutral-100">
           <Reveal className="text-center">
-            <h2 className="mb-4 text-3xl font-bold">
+            <h2 className="mb-4 text-3xl font-bold text-gradient-brand">
               Ready to discuss your AI roadmap?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700 dark:text-neutral-300">

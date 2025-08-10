@@ -8,6 +8,7 @@ type SectionProps = PropsWithChildren<{
   className?: string;
   containerClassName?: string;
   id?: string;
+  tone?: "surface" | "muted" | "contrast" | "transparent";
 }>;
 
 export function Section({
@@ -16,10 +17,19 @@ export function Section({
   className = "",
   containerClassName = "",
   id,
+  tone = "surface",
   children,
 }: SectionProps) {
+  const toneClass =
+    tone === "surface"
+      ? "border-t bg-white"
+      : tone === "muted"
+      ? "border-t bg-neutral-50"
+      : tone === "contrast"
+      ? "border-0 gradient-contrast-surface"
+      : "border-0 bg-transparent";
   return (
-    <section id={id} className={`border-t bg-white ${className}`}>
+    <section id={id} className={`${toneClass} ${className}`}>
       <Container className={`py-20 ${containerClassName}`}>
         {(title ?? subtitle) && (
           <Reveal className="mb-8 text-center">

@@ -20,7 +20,7 @@ export default function TermsPage() {
           subtitle="Legal terms governing the use of our services."
           crumbs={[{ label: "Home", href: "/" }, { label: "Terms" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Prose>
             <p>
               These terms govern your use of our website and services. By

@@ -108,7 +108,7 @@ export default function FAQPage() {
           subtitle="Straight answers so you can decide quickly."
           crumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
         />
-        <Section className="bg-white">
+        <Section tone="surface">
           <Reveal>
             <div className="mx-auto max-w-4xl">
               {faqSections.map((section, sectionIdx) => (
@@ -131,9 +131,7 @@ export default function FAQPage() {
         </Section>
 
         {/* Still have questions section */}
-        <Section 
-          className="bg-neutral-50"
-        >
+        <Section tone="muted">
           <Reveal>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
@@ -152,7 +150,7 @@ export default function FAQPage() {
         <Section 
           title="Quick reference"
           subtitle="Key facts about working with us."
-          className="bg-white"
+          tone="surface"
         >
           <Reveal>
             <div className="grid gap-6 md:grid-cols-3">

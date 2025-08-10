@@ -33,16 +33,16 @@ export function EnhancedPricingTable({ plans, className = "" }: EnhancedPricingT
             onMouseLeave={() => setHoveredPlan(null)}
           >
             {/* Popular badge */}
-            {plan.popular && (
-              <div className="absolute -top-4 left-1/2 z-30 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-1.5 text-xs font-semibold text-white shadow-lg">
+              {plan.popular && (
+              <div className="absolute -top-4 left-1/2 z-30 -translate-x-1/2 rounded-full gradient-cta px-4 py-1.5 text-xs font-semibold text-white shadow-lg">
                 Most Popular
               </div>
             )}
             
             {/* Main card */}
-            <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${
+              <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${
               plan.highlight 
-                ? "border-blue-200 dark:border-blue-400/30 glass-strong shadow-2xl scale-105" 
+                ? "border-brand-200 dark:border-brand-400/30 glass-strong shadow-2xl scale-105" 
                 : "glass border-neutral-200 dark:border-neutral-700 shadow-lg hover:shadow-xl group-hover:scale-[1.02]"
             }`}>
               
@@ -70,14 +70,14 @@ export function EnhancedPricingTable({ plans, className = "" }: EnhancedPricingT
                     <li key={featureIdx} className="flex items-start">
                       <div className={`mr-3 mt-0.5 h-5 w-5 flex-shrink-0 rounded-full flex items-center justify-center ${
                         plan.highlight 
-                          ? "bg-blue-100 dark:bg-blue-900/30" 
-                          : "bg-green-100 dark:bg-green-900/30"
+                          ? "bg-brand-100 dark:bg-brand-900/30" 
+                          : "bg-brand-100/60 dark:bg-brand-900/20"
                       }`}>
                         <svg 
                           className={`h-3 w-3 ${
                             plan.highlight 
-                              ? "text-blue-600 dark:text-blue-400" 
-                              : "text-green-600 dark:text-green-400"
+                              ? "text-brand-600 dark:text-brand-400" 
+                              : "text-brand-600/80 dark:text-brand-400/80"
                           }`}
                           fill="currentColor" 
                           viewBox="0 0 20 20"

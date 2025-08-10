@@ -118,8 +118,8 @@ export default function ContactPage() {
           subtitle="Tell us where you want to be in 90 days. We'll reply within one business day."
           crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
         />
-        <Section className="bg-white">
-          <div className="grid gap-12 lg:grid-cols-2">
+        <Section tone="surface">
+            <div className="grid gap-12 lg:grid-cols-2">
             {/* Contact Form */}
             <Reveal>
               <form onSubmit={onSubmit} className="space-y-4" noValidate>
@@ -221,7 +221,7 @@ export default function ContactPage() {
             </CTA>
             {error && <p className="text-sm text-red-600">{error}</p>}
             {status === "success" && (
-              <p className="text-sm text-green-600">
+              <p className="text-sm text-brand-600">
                 Thanks — we’ll reach out shortly.
               </p>
             )}
@@ -235,19 +235,19 @@ export default function ContactPage() {
                   <h3 className="text-xl font-semibold mb-4">What to expect</h3>
                   <ul className="space-y-3 text-sm text-neutral-700">
                     <li className="flex items-start gap-3">
-                      <span className="text-green-600">✓</span>
+                      <span className="text-brand-600">✓</span>
                       <div>
                         <strong>Quick response:</strong> We&apos;ll get back to you within one business day with next steps.
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="text-green-600">✓</span>
+                      <span className="text-brand-600">✓</span>
                       <div>
                         <strong>Discovery call:</strong> 30-minute conversation to understand your goals and challenges.
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="text-green-600">✓</span>
+                      <span className="text-brand-600">✓</span>
                       <div>
                         <strong>Clear proposal:</strong> Specific scope, timeline, and success criteria within a week.
                       </div>
@@ -300,7 +300,7 @@ export default function ContactPage() {
         <Section 
           title="Common questions"
           subtitle="Answers to help you decide if we're a good fit."
-          className="bg-neutral-50"
+          tone="muted"
         >
           <Reveal>
             <div className="grid gap-6 md:grid-cols-2">

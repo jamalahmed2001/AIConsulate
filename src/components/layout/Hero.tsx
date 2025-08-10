@@ -44,12 +44,12 @@ export function Hero() {
             </div>
           </Reveal>
           <Reveal delayMs={80}>
-            <h1 className="mb-4 text-6xl font-extrabold tracking-tight">
+            <h1 className="mb-4 text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
               Build with AI, ship outcomes.
             </h1>
           </Reveal>
           <Reveal delayMs={140}>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-700">
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
               Strategy, automation, and agentic systems—implemented securely and
               measured against business metrics.
             </p>

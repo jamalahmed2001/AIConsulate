@@ -23,9 +23,9 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group w-full text-left transition-all duration-300 hover:scale-[1.02]"
+      className="group w-full h-full text-left transition-all duration-300 hover:scale-[1.02]"
     >
-      <Card className={`relative overflow-hidden transition-all duration-300 ${
+      <Card className={`relative overflow-hidden transition-all duration-300 flex flex-col ${
         isHovered ? "shadow-xl ring-2 ring-brand-200" : "hover:shadow-lg"
       }`}>
         {/* Background gradient */}
@@ -39,7 +39,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
         />
         
         {/* Content */}
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col h-full">
           {/* Icon */}
           <div className={`mb-4 text-3xl transition-transform duration-300 ${
             isHovered ? "scale-110" : ""
@@ -58,7 +58,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
           </p>
           
           {/* Features */}
-          <ul className="space-y-1">
+          <ul className="space-y-1 flex-grow">
             {service.features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="flex items-center text-xs text-neutral-500 dark:text-neutral-400">
                 <span className="mr-2 h-1 w-1 rounded-full bg-brand-400" />
@@ -69,7 +69,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
           
           {/* CTA */}
           <div className={`mt-6 flex items-center justify-between`}>
-            <div className={`flex items-center text-sm font-medium text-blue-600 transition-all duration-300 ${
+            <div className={`flex items-center text-sm font-medium text-brand-600 transition-all duration-300 ${
               isHovered ? "translate-x-1" : ""
             }`}>
               Learn more
@@ -87,7 +87,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
                 />
               </svg>
             </div>
-            <div className={`rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 p-2 transition-all duration-300 ${
+            <div className={`rounded-lg gradient-cta-soft p-2 transition-all duration-300 ${
               isHovered ? "scale-110 shadow-md" : ""
             }`}>
               <div 

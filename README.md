@@ -340,3 +340,192 @@ pnpm build && pnpm start
 * Keep server boundaries clear; move slowly when migrating auth routes.
 
 > **Subtle portfolio flex**: This README demonstrates judgment—security posture, DX, and UX standards—without shouting.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# What you’re building (as a separate OSS module)
+
+**`entitlements-service`** — one tiny service that does four things flawlessly:
+
+1. **Auth** (extension ↔ backend)
+2. **Subscriptions** (Stripe/Paddle/Lemon Squeezy)
+3. **Credits** (prepaid packs + metered usage)
+4. **Entitlements API** (read balance, spend, grant, revoke, receipts)
+
+Chrome Web Store payments are dead. Period. Build your own. ([Chrome for Developers][1], [Google Groups][2])
+
+---
+
+## Payments stack (pick one, don’t be cute)
+
+* **Stripe Billing (recommended)**: best dev UX, supports **usage-based meters** + subscriptions + one-off credit packs. You push **meter events** via API/webhooks. ([Stripe Docs][3])
+* **Paddle** or **Lemon Squeezy** if you want a Merchant-of-Record to handle EU VAT/Sales tax for you. They own tax + invoicing hell. ([Paddle][4], [Lemon Squeezy Docs][5])
+
+**Rule:** your extension never touches secrets. All payment actions go through your backend’s Checkout/Portal links.
+
+---
+
+## Chrome extension auth that actually works
+
+* MV3 extension uses **`chrome.identity.launchWebAuthFlow`** to do OAuth in a popup to *your* domain (PKCE; no client secret in the extension). Works across Chromium browsers; don’t rely on `getAuthToken`. ([Chrome for Developers][6], [MDN Web Docs][7])
+* PKCE is non-optional for a public client. Do it. ([authgear.com][8])
+
+**Flow**
+
+1. Extension opens `/auth/start` → your server generates PKCE + state.
+2. User signs in (Google OIDC or email link).
+3. Server mints a **short-lived JWT access token** (5–15 min) + **refresh token** bound to the extension install.
+4. Extension stores **access token** only; when it expires, call `/auth/refresh` (refresh lives in HttpOnly cookie or device-bound token—do **not** drop it in localStorage).
+
+---
+
+## Entitlements model (subscriptions + credits)
+
+* **Subscriptions** unlock features/quotas per period (monthly cap, “Pro features”).
+* **Credits** are a **ledger** (integer units) consumed by your voice calls or API usage.
+* **Metered** plans (Stripe Meters) if you price by minutes/tokens—server sends usage events.
+
+**Never trust the client for spending.** The **server that runs the voice call** should be the one to charge credits / emit meter events.
+
+---
+
+## Minimal schema (Postgres)
+
+Keep it explicit and auditable:
+
+```
+users(id, email, google_sub, created_at)
+
+customers(id, user_id, provider, provider_customer_id, created_at)
+
+products(id, code, name)
+prices(id, product_id, provider, provider_price_id, interval, currency, unit_amount, metered boolean)
+
+subscriptions(id, user_id, provider_subscription_id, status, current_period_end, plan_code, quantity, created_at, updated_at)
+
+credit_ledger(id, user_id, delta, currency, reason, source_ref, created_at)
+-- sum(delta) is balance. never UPDATE balances; append-only.
+
+usage_events(id, user_id, meter_code, quantity, ts, ext_event_id UNIQUE, idempotency_key UNIQUE)
+
+installations(id, extension_id, instance_id, user_id NULL, first_seen, last_seen, revoked boolean)
+
+api_tokens(id, user_id, install_id, scope, expires_at, revoked_at, jti UNIQUE)
+```
+
+Materialize read models if you need fast `balance` or `minutes_used_this_period`.
+
+---
+
+## API (boring, versioned)
+
+* `POST /auth/start` → returns {authUrl, codeVerifier, state}
+* `POST /auth/callback` → returns {accessToken, refreshCookie}
+* `GET  /me/entitlements` → {plans\[], features\[], creditBalance, periodUsage}
+* `POST /credits/spend` → {amount, feature, idempotencyKey} → {newBalance}
+* `POST /credits/grant` (admin/webhook only)
+* `POST /meters/event` (server-to-server only)
+* `GET  /billing/portal-link` (returns Stripe/Paddle/Lemon portal URL)
+* `POST /webhooks/stripe|paddle|lemonsqueezy`
+
+**Idempotency** on every write. If you skip this, you’ll double-charge when a tab retries.
+
+---
+
+## Chrome extension side (MV3)
+
+* On install → create **installation id** (UUID), register with `/installations/register`.
+* On popup open → call `/me/entitlements` to show **balance + plan**.
+* **Spend** never happens from the extension. Only your **voice backend** spends.
+
+**Auth snippet (outline)**
+
+```ts
+const redirectUri = chrome.identity.getRedirectURL('oauth2');
+const authUrl = await fetchJSON('/auth/start?redirect_uri=' + encodeURIComponent(redirectUri));
+const respUrl = await chrome.identity.launchWebAuthFlow({ url: authUrl.url, interactive: true });
+// Parse code, state; POST to /auth/callback
+// Store accessToken in memory; refresh via backend when needed
+```
+
+Docs you should actually read before typing: Chrome identity & OAuth guides. ([Chrome for Developers][6])
+
+---
+
+## Usage + credits: how to meter without getting robbed
+
+**For the voice calls your extensions trigger:**
+
+* **Server** calculates spend from *actual* resources used (e.g., ASR seconds + TTS characters).
+* For per-minute billing: emit meter events or decrement credits **every 5–10 s** (“heartbeats”).
+* Maintain a **reservation** model: on call start, soft-reserve N credits; on end, reconcile to actual usage; release or top-up as needed.
+* Stripe Meters: define `meter: ai_minutes` (or tokens), then `POST meter events` with `{customer, value, ts}`. ([Stripe Docs][3])
+
+---
+
+## Webhooks (the only source of truth for billing state)
+
+**Stripe**: handle `invoice.payment_succeeded`, `customer.subscription.updated`, `customer.subscription.deleted`, `charge.refunded`. Update `subscriptions` and **append** a ledger grant when someone buys a credit pack. (Stripe processes meter events async—don’t expect instant dashboard totals.) ([Stripe Docs][9])
+
+**Paddle/Lemon Squeezy**: similar events, plus they handle **VAT/Sales tax** as MoR if you don’t want to touch tax at all. ([Paddle][4], [Lemon Squeezy Docs][5])
+
+---
+
+## Anti-abuse (don’t be a pushover)
+
+* **Bind tokens to installation** (store install\_id in JWT; reject if it doesn’t match).
+* **Replay protection** (JWT `jti`, 5–15 min TTL, revoke list in Redis).
+* **Rate limit** by user + install + IP (sliding window).
+* **Offline grace**: cache entitlements in the extension; allow 15 minutes of cached access then hard-fail.
+* **Chargeback quarantine**: auto-revoke entitlements if provider flags fraud.
+
+---
+
+## UX that doesn’t suck
+
+* **One “Manage plan” button** opens customer portal.
+* **Unified balance** across all your extensions (per-feature quotas shown per extension).
+* **Receipts** downloadable from portal.
+* **Free tier** with tiny credit drip daily—market, not charity.
+
+---
+
+## Mapping to your voice stack
+
+* Keep **credits** in the entitlements service, not in the call service.
+* The **voice service** sends `SpendRequest(user, feature, amount, idempotencyKey)` to entitlements every heartbeat; on deny, it **ducks** TTS and says “out of credits” (or ends the call).
+* For subscriptions with caps (e.g., 300 min/month), you don’t need credits—use **metered usage** only; for hybrid (sub + overage), keep both.
+
+---
+
+## Compliance / boring but mandatory
+
+* If you sell globally and don’t want to be the Merchant of Record, use **Paddle**/**Lemon Squeezy** (they handle VAT/GST/Sales Tax). If you go **Stripe**, you own taxes (Stripe Tax can help, still your liability). ([Paddle][4])
+* Chrome Web Store **Licensing API is deprecated**; do **not** build on it. ([Chrome Developers][10])
+
+---
+
+## Acceptance tests (ship with these)
+
+* **Idempotent spend:** 10 parallel `spend(1)` calls with same idempotency key → balance decrements **once**.
+* **Race:** spend while webhook downgrades subscription → allow up to grace window, then deny.
+* **Retry storms:** drop DB mid-purchase; reconcile from webhooks without double-grant.
+* **Cross-device:** two installs race spending from same account; totals correct.
+* **Portal flow:** cancel, pause, upgrade, proration reflected within 60 s.
+
+---
+
+## Deliverables (MVP you actually need)
+
+* **Service:** Go or TypeScript (Nest/Fastify), Postgres + Redis.
+* **Adapters:** `payments/stripe|paddle|lemonsqueezy.ts`.
+* **CLI:** `grants add --user X --credits 1000 --reason promo`.
+* **SDKs:** tiny JS client for MV3 + server-side Node/Go client.
+* **Examples:** MV3 extension with login, balance UI, “Buy credits”, and “Manage plan”.
+
+---
