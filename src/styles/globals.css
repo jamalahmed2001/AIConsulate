@@ -237,6 +237,22 @@ a:active, button:active, .btn:active { transform: translateY(0); }
   color: transparent;
 }
 
+/* In dark mode, keep gradient text readable by using solid white */
+@media (prefers-color-scheme: dark) {
+  .text-gradient-brand {
+    background-image: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: #ffffff;
+  }
+}
+html.dark .text-gradient-brand, [data-theme="dark"] .text-gradient-brand {
+  background-image: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: #ffffff;
+}
+
 /* Contrast surface for sections behind primary CTA buttons */
 .gradient-contrast-surface {
   position: relative;

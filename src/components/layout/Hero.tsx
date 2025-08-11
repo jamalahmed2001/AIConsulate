@@ -44,7 +44,7 @@ export function Hero() {
             </div>
           </Reveal>
           <Reveal delayMs={80}>
-            <h1 className="mb-4 text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+            <h1 className="mb-4 text-6xl font-extrabold tracking-tight text-gradient-brand">
               Build with AI, ship outcomes.
             </h1>
           </Reveal>
