@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { Container } from "@/components/ui/Container";
 import { CTA } from "@/components/ui/CTA";
+import { Button } from "@/components/ui/Button";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -10,6 +12,7 @@ const navItems = [
   { href: "/ai", label: "AI" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/credits", label: "Credits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -136,6 +139,7 @@ function ThemeToggle() {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const { status } = useSession();
   return (
     <header className="bg-surface-80 supports-[backdrop-filter]:bg-surface-60 sticky top-0 z-40 w-full border-b backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
@@ -154,7 +158,22 @@ export function Navbar() {
             </Link>
           ))}
           <ThemeToggle />
-          <CTA href="/contact" size="sm" className="ml-2" label="Contact us" />
+          {status === "authenticated" ? (
+            <div className="flex items-center gap-2 ml-2">
+              <CTA href="/dashboard" size="sm" tone="secondary" label="Dashboard" />
+                  <Button 
+                size="sm" 
+                tone="ghost"
+                    onClick={() => void signOut()}
+                label="Sign Out"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 ml-2">
+              <CTA href="/auth/signin" size="sm" tone="secondary" label="Sign In" />
+              <CTA href="/auth/signup" size="sm" label="Sign Up" />
+            </div>
+          )}
         </nav>
         <button
           aria-label="Toggle menu"
@@ -191,9 +210,30 @@ export function Navbar() {
                 {n.label}
               </Link>
             ))}
-            <div className="px-2 py-2 flex items-center justify-between">
-              <ThemeToggle />
-              <CTA href="/contact" size="sm" onClick={() => setOpen(false)} label="Contact us" />
+            <div className="px-2 py-2">
+              <div className="flex items-center justify-between mb-2">
+                <ThemeToggle />
+              </div>
+              {status === "authenticated" ? (
+                <div className="flex flex-col gap-2">
+                  <CTA href="/dashboard" size="sm" tone="secondary" label="Dashboard" fullWidth onClick={() => setOpen(false)} />
+                  <Button 
+                    size="sm" 
+                    tone="ghost"
+                    fullWidth
+                    onClick={() => {
+                      void signOut();
+                      setOpen(false);
+                    }}
+                    label="Sign Out"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <CTA href="/auth/signin" size="sm" tone="secondary" label="Sign In" fullWidth onClick={() => setOpen(false)} />
+                  <CTA href="/auth/signup" size="sm" label="Sign Up" fullWidth onClick={() => setOpen(false)} />
+                </div>
+              )}
             </div>
           </Container>
         </div>

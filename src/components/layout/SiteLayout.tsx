@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { Navbar } from "@/components/layout/Navbar";
+import dynamic from "next/dynamic";
 import { Footer } from "@/components/layout/Footer";
+const DynamicNavbar = dynamic(() => import("@/components/layout/Navbar").then(m => m.Navbar), { ssr: false });
 import { useEffect, useState } from "react";
 
 export function SiteLayout({ children }: PropsWithChildren) {
@@ -18,7 +19,8 @@ export function SiteLayout({ children }: PropsWithChildren) {
   }, []);
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
+      {/* Render Navbar client-side only to avoid SSR/client session drift causing hydration mismatch */}
+      <DynamicNavbar />
       {/* Journey progress bar */}
       <div className="sticky top-16 z-30 h-1 w-full bg-transparent">
         <div

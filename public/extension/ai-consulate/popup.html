@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Consulate</title>
+    <style>
+      body { font-family: ui-sans-serif, system-ui, -apple-system; margin: 0; padding: 12px; width: 320px; }
+      h1 { font-size: 16px; margin: 0 0 8px; }
+      label { display: block; font-size: 12px; color: #374151; margin-bottom: 4px; }
+      input { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; }
+      button { padding: 8px 10px; border: 0; border-radius: 6px; cursor: pointer; }
+      .row { margin-bottom: 10px; }
+      .primary { background: #0ea5e9; color: white; }
+      .secondary { background: #f3f4f6; }
+      .muted { color: #6b7280; font-size: 12px; }
+      .balance { font-size: 22px; font-weight: 700; color: #0ea5e9; }
+      .error { color: #b91c1c; font-size: 12px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }
+    </style>
+  </head>
+  <body>
+    <h1>AI Consulate</h1>
+    <div class="card">
+      <div class="row">
+        <label for="baseUrl">Site URL</label>
+        <input id="baseUrl" type="text" placeholder="https://your-domain.com" />
+        <div class="muted">Set the site where your account lives.</div>
+      </div>
+      <div class="row">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" />
+      </div>
+      <div class="row">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" />
+      </div>
+      <div class="grid">
+        <button id="login" class="primary">Login & Get Token</button>
+        <button id="openCredits" class="secondary">Open Credits</button>
+      </div>
+      <div class="row">
+        <label for="accessToken">Access Token</label>
+        <input id="accessToken" type="text" placeholder="Token will appear here after login" />
+        <div class="muted">Token expires; you can login again to refresh.</div>
+      </div>
+      <div class="grid">
+        <button id="save" class="secondary">Save</button>
+        <button id="openCredits" class="secondary">Open Credits</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 10px;">
+      <div class="grid">
+        <button id="refresh" class="primary">Refresh Balance</button>
+        <button id="clear" class="secondary">Clear</button>
+      </div>
+      <div id="status" class="muted" style="margin-top: 8px;"></div>
+      <div id="error" class="error" style="margin-top: 4px;"></div>
+      <div style="margin-top: 10px;">Balance</div>
+      <div id="balance" class="balance">—</div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+  </html>
+
+

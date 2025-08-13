@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "AI Consulate",
+  "version": "0.1.0",
+  "description": "Check your AI Consulate credit balance.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI Consulate"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}
+
+
