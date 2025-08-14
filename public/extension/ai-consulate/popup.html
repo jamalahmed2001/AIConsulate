@@ -5,65 +5,342 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI Consulate</title>
     <style>
-      body { font-family: ui-sans-serif, system-ui, -apple-system; margin: 0; padding: 12px; width: 320px; }
-      h1 { font-size: 16px; margin: 0 0 8px; }
-      label { display: block; font-size: 12px; color: #374151; margin-bottom: 4px; }
-      input { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; }
-      button { padding: 8px 10px; border: 0; border-radius: 6px; cursor: pointer; }
-      .row { margin-bottom: 10px; }
-      .primary { background: #0ea5e9; color: white; }
-      .secondary { background: #f3f4f6; }
-      .muted { color: #6b7280; font-size: 12px; }
-      .balance { font-size: 22px; font-weight: 700; color: #0ea5e9; }
-      .error { color: #b91c1c; font-size: 12px; }
-      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-      .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }
+      * { box-sizing: border-box; }
+      body { 
+        font-family: ui-sans-serif, system-ui, -apple-system; 
+        margin: 0; 
+        padding: 16px; 
+        width: 320px; 
+        background: #f9fafb;
+      }
+      
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #111827;
+      }
+      
+      .icon {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      
+      .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+      }
+      
+      .status-indicator.connected {
+        background: #10b981;
+      }
+      
+      /* Not logged in state */
+      .auth-section {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        margin-bottom: 12px;
+      }
+      
+      .auth-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 8px;
+      }
+      
+      .auth-subtitle {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 16px;
+      }
+      
+      .input-group {
+        margin-bottom: 12px;
+      }
+      
+      .input-group:last-child {
+        margin-bottom: 0;
+      }
+      
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+      }
+      
+      input:focus {
+        outline: none;
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgb(14 165 233 / 0.1);
+      }
+      
+      .btn {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+      }
+      
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      .btn-primary {
+        background: #0ea5e9;
+        color: white;
+      }
+      
+      .btn-primary:hover:not(:disabled) {
+        background: #0284c7;
+      }
+      
+      .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+      }
+      
+      .btn-secondary:hover:not(:disabled) {
+        background: #e5e7eb;
+      }
+      
+      .btn-full {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      
+      .btn-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      
+      /* Dashboard state */
+      .dashboard-section {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        margin-bottom: 12px;
+      }
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      
+      .user-details {
+        flex: 1;
+      }
+      
+      .user-email {
+        font-size: 14px;
+        font-weight: 500;
+        color: #111827;
+      }
+      
+      .user-status {
+        font-size: 12px;
+        color: #6b7280;
+      }
+      
+      .balance-display {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      
+      .balance-label {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 4px;
+      }
+      
+      .balance-amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0ea5e9;
+      }
+      
+      .balance-unit {
+        font-size: 14px;
+        color: #6b7280;
+        margin-left: 4px;
+      }
+      
+      .loading {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 2px solid #e5e7eb;
+        border-radius: 50%;
+        border-top-color: #0ea5e9;
+        animation: spin 1s ease-in-out infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      .error-msg {
+        background: #fef2f2;
+        color: #dc2626;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #fecaca;
+      }
+      
+      .success-msg {
+        background: #f0fdf4;
+        color: #16a34a;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #bbf7d0;
+      }
+      
+      .hidden {
+        display: none !important;
+      }
+      
+      .url-display {
+        font-size: 11px;
+        color: #9ca3af;
+        text-align: center;
+        margin-bottom: 8px;
+        padding: 4px 8px;
+        background: #f3f4f6;
+        border-radius: 4px;
+        word-break: break-all;
+      }
     </style>
   </head>
   <body>
-    <h1>AI Consulate</h1>
-    <div class="card">
-      <div class="row">
-        <label for="baseUrl">Site URL</label>
-        <input id="baseUrl" type="text" placeholder="https://your-domain.com" />
-        <div class="muted">Set the site where your account lives.</div>
+    <div class="header">
+      <div class="logo">
+        <div class="icon">AI</div>
+        <span>AI Consulate</span>
       </div>
-      <div class="row">
-        <label for="email">Email</label>
-        <input id="email" type="email" placeholder="you@example.com" />
+      <div class="status-indicator" id="statusIndicator"></div>
+    </div>
+    
+    <div class="url-display" id="urlDisplay">Detecting site...</div>
+    
+    <!-- Not logged in state -->
+    <div id="authSection" class="auth-section">
+      <div class="auth-title">Welcome back!</div>
+      <div class="auth-subtitle">Sign in to access your AI credits</div>
+      
+      <div class="input-group">
+        <input id="email" type="email" placeholder="Enter your email" />
       </div>
-      <div class="row">
-        <label for="password">Password</label>
-        <input id="password" type="password" placeholder="••••••••" />
+      
+      <div class="input-group">
+        <input id="password" type="password" placeholder="Enter your password" />
       </div>
-      <div class="grid">
-        <button id="login" class="primary">Login & Get Token</button>
-        <button id="openCredits" class="secondary">Open Credits</button>
-      </div>
-      <div class="row">
-        <label for="accessToken">Access Token</label>
-        <input id="accessToken" type="text" placeholder="Token will appear here after login" />
-        <div class="muted">Token expires; you can login again to refresh.</div>
-      </div>
-      <div class="grid">
-        <button id="save" class="secondary">Save</button>
-        <button id="openCredits" class="secondary">Open Credits</button>
+      
+      <button id="loginBtn" class="btn btn-primary btn-full">Sign In</button>
+      
+      <div class="btn-grid">
+        <button id="signupBtn" class="btn btn-secondary">Sign Up</button>
+        <button id="creditsBtn" class="btn btn-secondary">Buy Credits</button>
       </div>
     </div>
+    
+    <!-- Logged in state -->
+    <div id="dashboardSection" class="dashboard-section hidden">
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div class="user-details">
+          <div class="user-email" id="userEmail">user@example.com</div>
+          <div class="user-status">Connected</div>
+        </div>
+      </div>
+      
+      <div class="balance-display">
+        <div class="balance-label">Available Credits</div>
+        <div class="balance-amount" id="balanceAmount">
+          <span class="loading" id="balanceLoader"></span>
+        </div>
+      </div>
+      
+      <div class="btn-grid">
+        <button id="dashboardBtn" class="btn btn-primary">Dashboard</button>
+        <button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+      </div>
+      
+      <div class="btn-grid" style="margin-top: 8px;">
+        <button id="buyCreditsBtn" class="btn btn-secondary">Buy Credits</button>
+        <button id="logoutBtn" class="btn btn-secondary">Sign Out</button>
+      </div>
 
-    <div class="card" style="margin-top: 10px;">
-      <div class="grid">
-        <button id="refresh" class="primary">Refresh Balance</button>
-        <button id="clear" class="secondary">Clear</button>
+      <!-- Testing Section -->
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+        <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px; font-weight: 500;">Testing Tools</div>
+        <div class="btn-grid">
+          <button id="testDeductBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Deduct (-5)</button>
+          <button id="testWebhookBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Auto Top-up</button>
+        </div>
       </div>
-      <div id="status" class="muted" style="margin-top: 8px;"></div>
-      <div id="error" class="error" style="margin-top: 4px;"></div>
-      <div style="margin-top: 10px;">Balance</div>
-      <div id="balance" class="balance">—</div>
     </div>
+    
+    <div id="errorMsg" class="error-msg hidden"></div>
+    <div id="successMsg" class="success-msg hidden"></div>
 
     <script src="popup.js"></script>
   </body>
-  </html>
+</html>
 
 

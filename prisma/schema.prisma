@@ -62,6 +62,7 @@ model User {
   sessions      Session[]
   subscriptions Subscription[]
   usageEvents   UsageEvent[]
+  appointments  Appointment[]
 }
 
 model VerificationToken {
@@ -200,4 +201,59 @@ model ApiToken {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+/// Service types for appointments
+model Service {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  description  String?
+  duration     Int           /// Duration in minutes
+  price        Int?          /// Price in cents
+  creditCost   Int?          /// Cost in credits
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  appointments Appointment[]
+}
+
+/// Available time slots for appointments
+model TimeSlot {
+  id          String        @id @default(cuid())
+  startTime   DateTime
+  endTime     DateTime
+  isAvailable Boolean       @default(true)
+  isRecurring Boolean       @default(false)
+  recurringPattern String?  /// RRULE pattern for recurring slots
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  appointments Appointment[]
+
+  @@index([startTime, endTime])
+}
+
+/// Customer appointment bookings
+model Appointment {
+  id          String   @id @default(cuid())
+  userId      String
+  serviceId   String
+  timeSlotId  String?
+  startTime   DateTime
+  endTime     DateTime
+  status      String   @default("scheduled") /// scheduled, confirmed, cancelled, completed, no_show
+  notes       String?
+  customerName String?
+  customerEmail String?
+  customerPhone String?
+  reminderSent Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service  Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  timeSlot TimeSlot? @relation(fields: [timeSlotId], references: [id])
+
+  @@index([userId])
+  @@index([startTime, endTime])
+  @@index([status])
 }

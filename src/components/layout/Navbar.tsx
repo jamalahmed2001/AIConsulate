@@ -12,7 +12,8 @@ const navItems = [
   { href: "/ai", label: "AI" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/credits", label: "Credits" },
+  { href: "/book", label: "Book Session" },
+  // { href: "/credits", label: "Credits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -161,6 +162,7 @@ export function Navbar() {
           {status === "authenticated" ? (
             <div className="flex items-center gap-2 ml-2">
               <CTA href="/dashboard" size="sm" tone="secondary" label="Dashboard" />
+              <CTA href="/admin/dashboard" size="sm" tone="ghost" label="Admin" />
                   <Button 
                 size="sm" 
                 tone="ghost"
@@ -217,6 +219,7 @@ export function Navbar() {
               {status === "authenticated" ? (
                 <div className="flex flex-col gap-2">
                   <CTA href="/dashboard" size="sm" tone="secondary" label="Dashboard" fullWidth onClick={() => setOpen(false)} />
+                  <CTA href="/admin/dashboard" size="sm" tone="ghost" label="Admin Panel" fullWidth onClick={() => setOpen(false)} />
                   <Button 
                     size="sm" 
                     tone="ghost"

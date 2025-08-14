@@ -2,7 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import { z } from "zod";
 
 import { db } from "@/server/db";
@@ -53,25 +53,13 @@ export const authConfig = {
           
           const user = await db.user.findUnique({
             where: { email },
-            select: {
-              id: true,
-              email: true,
-              name: true,
-              image: true,
-            },
-          });
+          }) as { id: string; email: string | null; name: string | null; image: string | null; passwordHash: string | null } | null;
           
-          if (!user) {
+          if (!user?.passwordHash) {
             return null;
           }
           
-          const account = await db.account.findFirst({
-            where: { userId: user.id, provider: "credentials" },
-            select: { access_token: true },
-          });
-          const passwordHash = account?.access_token ?? null;
-          if (!passwordHash) return null;
-          const isPasswordValid = await bcrypt.compare(password, passwordHash);
+          const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
           
           if (!isPasswordValid) {
             return null;
