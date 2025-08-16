@@ -9,10 +9,10 @@ type CardProps = PropsWithChildren<{
 }>;
 
 export function Card({ title, className = "", tone = "surface", children }: CardProps) {
-  const toneClass = tone === "muted" ? "bg-neutral-50" : "bg-white";
+  const toneClass = tone === "muted" ? "bg-surface-2" : "bg-surface";
   return (
     <div
-      className={`h-full min-h-[180px] rounded-[var(--radius-lg)] border ${toneClass} p-6 shadow-[var(--shadow-card)] ${className}`}
+      className={`h-full min-h-[180px] rounded-[var(--radius-lg)] border border-border ${toneClass} p-6 shadow-[var(--shadow-card)] ${className}`}
     >
       {title && <div className="mb-2 text-lg font-semibold">{title}</div>}
       {children}

@@ -22,9 +22,9 @@ export function Section({
 }: SectionProps) {
   const toneClass =
     tone === "surface"
-      ? "border-t bg-white"
+      ? "border-t border-border bg-surface"
       : tone === "muted"
-      ? "border-t bg-neutral-50"
+      ? "border-t border-border bg-surface-2"
       : tone === "contrast"
       ? "border-0 gradient-contrast-surface"
       : "border-0 bg-transparent";
@@ -34,12 +34,12 @@ export function Section({
         {(title ?? subtitle) && (
           <Reveal className="mb-8 text-center">
             {typeof title === "string" ? (
-              <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">{title}</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-fg">{title}</h2>
             ) : (
               title
             )}
             {subtitle && (
-              <p className="mx-auto mt-2 max-w-2xl text-neutral-700 dark:text-neutral-300">
+              <p className="mx-auto mt-2 max-w-2xl text-muted">
                 {subtitle}
               </p>
             )}

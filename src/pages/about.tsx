@@ -81,7 +81,7 @@ export default function AboutPage() {
         <Section tone="surface">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center mb-12">
-              <p className="text-lg text-neutral-700 leading-relaxed">
+              <p className="text-lg text-muted leading-relaxed">
                 We&apos;re a team of experienced AI practitioners who&apos;ve learned that the real challenge isn&apos;t building AI—it&apos;s building AI that works reliably in production, integrates cleanly with existing systems, and delivers measurable business value.
               </p>
             </div>
@@ -95,7 +95,7 @@ export default function AboutPage() {
                   <div className="text-4xl mb-4">{principle.icon}</div>
                   <h3 className="text-xl font-semibold mb-2">{principle.title}</h3>
                   <p className="text-brand-600 font-medium mb-3">{principle.description}</p>
-                  <p className="text-sm text-neutral-700">{principle.details}</p>
+                  <p className="text-sm text-muted">{principle.details}</p>
                 </Card>
               </Reveal>
             ))}

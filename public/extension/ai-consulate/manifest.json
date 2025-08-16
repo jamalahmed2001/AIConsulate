@@ -1,13 +1,31 @@
 {
   "manifest_version": 3,
   "name": "AI Consulate",
-  "version": "0.3.0",
-  "description": "AI Consulate - Login, check credits, test deductions, and webhook auto top-ups.",
+  "version": "0.4.0",
+  "description": "Universal web page scraper & parser powered by AI. Log in, extract page or selection, and parse into structured data using LLMs.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "AI Consulate"
   },
-  "permissions": ["storage", "activeTab"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "host_permissions": [
     "http://*/*",
     "https://*/*"

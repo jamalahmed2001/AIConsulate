@@ -82,7 +82,9 @@ export function CTA(props: CTAProps) {
   const classes = `${baseClasses(size, fullWidth)} ${toneClasses(tone)} ${className}`;
 
   if ("href" in props && props.href) {
-    const { href, prefetch, ...anchorRest } = props;
+    const { href, prefetch, ...anchorRest } = props as CtaAsLink & { fullWidth?: boolean };
+    // Remove non-DOM prop to avoid React unknown prop warning
+    delete (anchorRest as Record<string, unknown>).fullWidth;
     return (
       <Link href={href} prefetch={prefetch} className={classes} {...anchorRest}>
         {content}
@@ -90,9 +92,10 @@ export function CTA(props: CTAProps) {
     );
   }
 
-  const buttonProps = rest as CtaAsButton;
+  const buttonProps = { ...(rest as CtaAsButton & { fullWidth?: boolean }) } as Record<string, unknown>;
+  delete buttonProps.fullWidth;
   return (
-    <button className={classes} {...buttonProps}>
+    <button className={classes} {...(buttonProps as CtaAsButton)}>
       {content}
     </button>
   );

@@ -265,6 +265,34 @@
         border-radius: 4px;
         word-break: break-all;
       }
+      /* Parser UI */
+      .parser-section {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        margin-bottom: 12px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 72px;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+      .result-box {
+        background: #0b1020;
+        color: #d1e6ff;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+        border-radius: 8px;
+        padding: 10px;
+        overflow: auto;
+        max-height: 200px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
     </style>
   </head>
   <body>
@@ -278,60 +306,100 @@
     
     <div class="url-display" id="urlDisplay">Detecting site...</div>
     
-    <!-- Not logged in state -->
-    <div id="authSection" class="auth-section">
-      <div class="auth-title">Welcome back!</div>
-      <div class="auth-subtitle">Sign in to access your AI credits</div>
-      
-      <div class="input-group">
-        <input id="email" type="email" placeholder="Enter your email" />
-      </div>
-      
-      <div class="input-group">
-        <input id="password" type="password" placeholder="Enter your password" />
-      </div>
-      
-      <button id="loginBtn" class="btn btn-primary btn-full">Sign In</button>
-      
-      <div class="btn-grid">
-        <button id="signupBtn" class="btn btn-secondary">Sign Up</button>
-        <button id="creditsBtn" class="btn btn-secondary">Buy Credits</button>
-      </div>
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+      <button id="tabExtract" class="btn btn-secondary" style="flex:1">Extract</button>
+      <button id="tabSettings" class="btn btn-secondary" style="flex:1">Settings</button>
     </div>
     
-    <!-- Logged in state -->
-    <div id="dashboardSection" class="dashboard-section hidden">
-      <div class="user-info">
-        <div class="user-avatar" id="userAvatar">U</div>
-        <div class="user-details">
-          <div class="user-email" id="userEmail">user@example.com</div>
-          <div class="user-status">Connected</div>
-        </div>
+    <!-- Extract tab -->
+    <div id="extractSection" class="parser-section">
+      <div class="auth-title">Parse Page or Selection</div>
+      <div class="auth-subtitle">Leave fields empty for automatic parsing</div>
+      <div class="input-group" style="margin-bottom:8px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280">
+          <input type="checkbox" id="advancedToggle" /> Advanced settings
+        </label>
       </div>
-      
-      <div class="balance-display">
-        <div class="balance-label">Available Credits</div>
-        <div class="balance-amount" id="balanceAmount">
-          <span class="loading" id="balanceLoader"></span>
-        </div>
+      <div id="advancedPanel" class="btn-grid hidden" style="margin-bottom:8px">
+        <select id="provider" class="btn btn-secondary" style="padding:8px">
+          <option value="">Default</option>
+          <option value="openai">OpenAI</option>
+          <option value="openrouter">OpenRouter</option>
+        </select>
+        <input id="model" placeholder="Optional model (e.g., gpt-4o-mini)" />
       </div>
-      
+      <div class="input-group">
+        <textarea id="instructions" placeholder="(Optional) Instructions. Leave empty for automatic parsing."></textarea>
+      </div>
+      <div class="input-group">
+        <textarea id="schema" placeholder='(Optional) JSON schema or example shape. Leave empty for automatic format.'></textarea>
+      </div>
       <div class="btn-grid">
-        <button id="dashboardBtn" class="btn btn-primary">Dashboard</button>
-        <button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+        <button id="parsePageBtn" class="btn btn-primary">Parse Page</button>
+        <button id="parseSelectionBtn" class="btn btn-secondary">Parse Selection</button>
+      </div>
+      <div class="input-group" style="margin-top:12px">
+        <div id="result" class="result-box hidden"></div>
+      </div>
+    </div>
+
+    <!-- Settings tab -->
+    <div id="settingsSection" class="hidden">
+      <!-- Not logged in state -->
+      <div id="authSection" class="auth-section">
+        <div class="auth-title">Welcome back!</div>
+        <div class="auth-subtitle">Sign in to access your AI credits</div>
+        
+        <div class="input-group">
+          <input id="email" type="email" placeholder="Enter your email" />
+        </div>
+        
+        <div class="input-group">
+          <input id="password" type="password" placeholder="Enter your password" />
+        </div>
+        
+        <button id="loginBtn" class="btn btn-primary btn-full">Sign In</button>
+        
+        <div class="btn-grid">
+          <button id="signupBtn" class="btn btn-secondary">Sign Up</button>
+          <button id="creditsBtn" class="btn btn-secondary">Buy Credits</button>
+        </div>
       </div>
       
-      <div class="btn-grid" style="margin-top: 8px;">
-        <button id="buyCreditsBtn" class="btn btn-secondary">Buy Credits</button>
-        <button id="logoutBtn" class="btn btn-secondary">Sign Out</button>
-      </div>
-
-      <!-- Testing Section -->
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
-        <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px; font-weight: 500;">Testing Tools</div>
+      <!-- Logged in state -->
+      <div id="dashboardSection" class="dashboard-section hidden">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <div class="user-email" id="userEmail">user@example.com</div>
+            <div class="user-status">Connected</div>
+          </div>
+        </div>
+        
+        <div class="balance-display">
+          <div class="balance-label">Available Credits</div>
+          <div class="balance-amount" id="balanceAmount">
+            <span class="loading" id="balanceLoader"></span>
+          </div>
+        </div>
+        
         <div class="btn-grid">
-          <button id="testDeductBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Deduct (-5)</button>
-          <button id="testWebhookBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Auto Top-up</button>
+          <button id="dashboardBtn" class="btn btn-primary">Dashboard</button>
+          <button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+        </div>
+        
+        <div class="btn-grid" style="margin-top: 8px;">
+          <button id="buyCreditsBtn" class="btn btn-secondary">Buy Credits</button>
+          <button id="logoutBtn" class="btn btn-secondary">Sign Out</button>
+        </div>
+
+        <!-- Testing Section -->
+        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #e5e7eb;">
+          <div style="font-size: 12px; color: #6b7280; margin-bottom: 8px; font-weight: 500;">Testing Tools</div>
+          <div class="btn-grid">
+            <button id="testDeductBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Deduct (-5)</button>
+            <button id="testWebhookBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 8px;">Test Auto Top-up</button>
+          </div>
         </div>
       </div>
     </div>

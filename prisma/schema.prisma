@@ -171,6 +171,7 @@ model UsageEvent {
   ts             DateTime @default(now())
   extEventId     String?  @unique
   idempotencyKey String?  @unique
+  resultJson     Json?
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

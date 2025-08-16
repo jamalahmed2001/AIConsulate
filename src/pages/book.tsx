@@ -174,21 +174,21 @@ export default function BookPage() {
       <div className="max-w-4xl mx-auto mt-12 grid md:grid-cols-3 gap-6">
         <Card>
           <h3 className="font-semibold mb-2">Flexible Scheduling</h3>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             Choose from available time slots that work with your schedule. We offer sessions Monday through Friday.
           </p>
         </Card>
         
         <Card>
           <h3 className="font-semibold mb-2">Personalized Discussion</h3>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             Each session is tailored to your specific needs, challenges, and goals with AI implementation.
           </p>
         </Card>
         
         <Card>
           <h3 className="font-semibold mb-2">Expert Guidance</h3>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             Get actionable insights and recommendations from experienced AI consultants and developers.
           </p>
         </Card>

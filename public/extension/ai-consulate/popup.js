@@ -84,6 +84,10 @@ function hideMessages() {
 function updateUI() {
   const authSection = $('authSection');
   const dashboardSection = $('dashboardSection');
+  const tabExtract = $('tabExtract');
+  const tabSettings = $('tabSettings');
+  const extractSection = $('extractSection');
+  const settingsSection = $('settingsSection');
   const statusIndicator = $('statusIndicator');
   
   if (currentState.isLoggedIn) {
@@ -101,6 +105,12 @@ function updateUI() {
     dashboardSection.classList.add('hidden');
     statusIndicator.classList.remove('connected');
   }
+
+  // default to Extract tab
+  tabExtract.classList.add('btn-primary');
+  tabSettings.classList.remove('btn-primary');
+  extractSection.classList.remove('hidden');
+  settingsSection.classList.add('hidden');
 }
 
 function setBalanceLoading(loading) {
@@ -113,6 +123,47 @@ function setBalanceLoading(loading) {
   } else {
     loader.classList.add('hidden');
   }
+}
+
+async function ensureContentScript() {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.id) return false;
+    return await new Promise((resolve) => {
+      chrome.runtime.sendMessage({ type: 'AIC_INJECT_CONTENT', tabId: tab.id }, (resp) => {
+        resolve(!!resp?.ok);
+      });
+    });
+  } catch {
+    return false;
+  }
+}
+
+async function collectFromPage(kind = 'page') {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab?.id) throw new Error('No active tab');
+  await ensureContentScript();
+  return await new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(tab.id, { type: 'AIC_COLLECT', kind }, (resp) => {
+      if (!resp?.ok) return reject(new Error('Failed to collect content'));
+      resolve(resp.data);
+    });
+  });
+}
+
+function setResult(data) {
+  const el = $('result');
+  if (!el) return;
+  el.classList.remove('hidden');
+  try {
+    el.textContent = JSON.stringify(data, null, 2);
+  } catch {
+    el.textContent = String(data);
+  }
+}
+
+function randomKey() {
+  return 'parse-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
 }
 
 // Storage functions
@@ -386,6 +437,26 @@ async function init() {
 // Event listeners
 document.addEventListener('DOMContentLoaded', async () => {
   await init();
+  // Tabs
+  $('tabExtract').addEventListener('click', () => {
+    $('tabExtract').classList.add('btn-primary');
+    $('tabSettings').classList.remove('btn-primary');
+    $('extractSection').classList.remove('hidden');
+    $('settingsSection').classList.add('hidden');
+  });
+  $('tabSettings').addEventListener('click', () => {
+    $('tabSettings').classList.add('btn-primary');
+    $('tabExtract').classList.remove('btn-primary');
+    $('settingsSection').classList.remove('hidden');
+    $('extractSection').classList.add('hidden');
+  });
+  // Advanced toggle
+  const advToggle = $('advancedToggle');
+  const advPanel = $('advancedPanel');
+  advToggle.addEventListener('change', () => {
+    if (advToggle.checked) advPanel.classList.remove('hidden');
+    else advPanel.classList.add('hidden');
+  });
   
   // Auth section event listeners
   $('loginBtn').addEventListener('click', loginUser);
@@ -414,6 +485,97 @@ document.addEventListener('DOMContentLoaded', async () => {
       loginUser();
     } else if (e.key === 'Enter') {
       $('password').focus();
+    }
+  });
+
+  // Parse actions
+  $('parsePageBtn').addEventListener('click', async () => {
+    try {
+      const instructions = $('instructions').value.trim();
+      const schemaText = $('schema').value.trim();
+      const provider = $('provider').value || 'openrouter';
+      const model = $('model').value.trim() || 'google/gemma-3-27b-instruct';
+      hideMessages();
+      const collected = await collectFromPage('page');
+      const response = await fetch(`${currentState.baseUrl}/api/parse`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${currentState.accessToken}`,
+        },
+        body: JSON.stringify({
+          idempotencyKey: randomKey(),
+          schema: schemaText ? (() => { try { return JSON.parse(schemaText); } catch { return schemaText; } })() : undefined,
+          instructions: instructions || undefined,
+          page: {
+            url: collected.metadata?.url || collected.url || '',
+            title: collected.metadata?.title || document.title,
+            lang: collected.metadata?.lang || navigator.language,
+            content: collected.content,
+            html: collected.html,
+            metadata: collected.metadata?.meta || [],
+          },
+          mode: 'page',
+          provider,
+          model,
+        })
+      });
+      const bodyText = await response.text();
+      let data;
+      try { data = JSON.parse(bodyText); } catch { data = null; }
+      if (!response.ok) {
+        setResult((data && (data.data ?? data)) || bodyText);
+        throw new Error((data && data.error) || `HTTP ${response.status}`);
+      }
+      setResult((data && (data.data ?? data)) || bodyText);
+      showSuccess('Parsed page successfully');
+    } catch (err) {
+      showError(err.message || 'Failed to parse page');
+    }
+  });
+
+  $('parseSelectionBtn').addEventListener('click', async () => {
+    try {
+      const instructions = $('instructions').value.trim();
+      const schemaText = $('schema').value.trim();
+      const provider = $('provider').value || 'openrouter';
+      const model = $('model').value.trim() || 'google/gemma-3-27b-instruct';
+      hideMessages();
+      const collected = await collectFromPage('selection');
+      const response = await fetch(`${currentState.baseUrl}/api/parse`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${currentState.accessToken}`,
+        },
+        body: JSON.stringify({
+          idempotencyKey: randomKey(),
+          schema: schemaText ? (() => { try { return JSON.parse(schemaText); } catch { return schemaText; } })() : undefined,
+          instructions: instructions || undefined,
+          page: {
+            url: collected.metadata?.url || collected.url || '',
+            title: collected.metadata?.title || document.title,
+            lang: collected.metadata?.lang || navigator.language,
+            content: collected.content,
+            html: collected.html,
+            metadata: collected.metadata?.meta || [],
+          },
+          mode: 'selection',
+          provider,
+          model,
+        })
+      });
+      const bodyText = await response.text();
+      let data;
+      try { data = JSON.parse(bodyText); } catch { data = null; }
+      if (!response.ok) {
+        setResult((data && (data.data ?? data)) || bodyText);
+        throw new Error((data && data.error) || `HTTP ${response.status}`);
+      }
+      setResult((data && (data.data ?? data)) || bodyText);
+      showSuccess('Parsed selection successfully');
+    } catch (err) {
+      showError(err.message || 'Failed to parse selection');
     }
   });
 });

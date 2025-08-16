@@ -152,7 +152,7 @@ export default function AdminDashboardPage() {
         <div className="text-center py-12">
           <div className="text-6xl mb-4">📊</div>
           <h4 className="text-xl font-semibold mb-2">Analytics Coming Soon</h4>
-          <p className="text-neutral-600 max-w-md mx-auto">
+          <p className="text-muted max-w-md mx-auto">
             Comprehensive analytics and reporting features are in development. 
             This will include booking trends, user engagement, revenue analytics, and more.
           </p>
@@ -174,7 +174,7 @@ export default function AdminDashboardPage() {
 
       <div className="mt-8">
         {/* Navigation Tabs */}
-        <div className="border-b border-neutral-200 mb-8">
+        <div className="border-b border-border mb-8">
           <div className="flex space-x-8 overflow-x-auto">
             {adminSections.map((section) => (
               <button
@@ -182,14 +182,14 @@ export default function AdminDashboardPage() {
                 onClick={() => setCurrentView(section.id)}
                 className={`flex items-center space-x-2 py-4 px-2 border-b-2 transition-colors whitespace-nowrap ${
                   currentView === section.id
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-neutral-600 hover:text-neutral-900"
+                    ? "border-brand-600 text-brand-600"
+                    : "border-transparent text-muted hover:text-fg"
                 }`}
               >
                 <span className="text-lg">{section.icon}</span>
                 <div className="text-left">
                   <div className="font-medium">{section.title}</div>
-                  <div className="text-xs text-neutral-500">{section.description}</div>
+                  <div className="text-xs text-muted-2">{section.description}</div>
                 </div>
               </button>
             ))}

@@ -19,9 +19,9 @@ export function PageHeader({
 }) {
   const toneClass =
     tone === "surface"
-      ? "border-b bg-white"
+      ? "border-b border-border bg-surface"
       : tone === "muted"
-      ? "border-b bg-neutral-50"
+      ? "border-b border-border bg-surface-2"
       : tone === "contrast"
       ? "border-0 gradient-contrast-surface"
       : "border-0 bg-transparent";
@@ -30,29 +30,29 @@ export function PageHeader({
       <Container className="py-14">
         <Reveal>
           {crumbs.length > 0 && (
-            <nav className="mb-3 text-xs text-neutral-500" aria-label="Breadcrumb">
+            <nav className="mb-3 text-xs text-muted" aria-label="Breadcrumb">
               <ol className="flex flex-wrap items-center gap-1">
                 {crumbs.map((c, i) => (
                   <li key={`${c.label}-${i}`} className="flex items-center gap-1">
                     {c.href ? (
-                      <Link href={c.href} className="hover:text-neutral-700">
+                      <Link href={c.href} className="hover:text-fg">
                         {c.label}
                       </Link>
                     ) : (
-                      <span className="text-neutral-700">{c.label}</span>
+                      <span className="text-fg">{c.label}</span>
                     )}
-                    {i < crumbs.length - 1 && <span className="text-neutral-400">/</span>}
+                    {i < crumbs.length - 1 && <span className="text-muted-2">/</span>}
                   </li>
                 ))}
               </ol>
             </nav>
           )}
           <div className={align === "center" ? "text-center" : "text-left"}>
-            <h1 className="text-4xl font-bold tracking-tight text-neutral-900 md:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight text-fg md:text-5xl">
               {title}
             </h1>
             {subtitle && (
-              <p className="mx-auto mt-3 max-w-2xl text-neutral-700">
+              <p className="mx-auto mt-3 max-w-2xl text-muted">
                 {subtitle}
               </p>
             )}

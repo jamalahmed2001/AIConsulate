@@ -12,7 +12,7 @@ export function Badge({
 }: BadgeProps) {
   const styles = {
     default: "bg-brand-100 text-brand-800 border border-brand-200",
-    outline: "border border-neutral-200 text-neutral-700",
+    outline: "border border-border text-muted",
   } as const;
   return (
     <span

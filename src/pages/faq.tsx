@@ -117,9 +117,9 @@ export default function FAQPage() {
                   <div className="grid gap-6 md:grid-cols-2">
                     {section.faqs.map((faq, idx) => (
                       <Reveal key={faq.q} delayMs={(sectionIdx * 4 + idx) * 100}>
-                        <div className="rounded-[var(--radius-lg)] border bg-white p-6 shadow-[var(--shadow-card)]">
+                        <div className="rounded-[var(--radius-lg)] border border-border bg-surface p-6 shadow-[var(--shadow-card)]">
                           <h3 className="font-semibold mb-3 text-brand-700">{faq.q}</h3>
-                          <p className="text-sm text-neutral-700">{faq.a}</p>
+                          <p className="text-sm text-muted">{faq.a}</p>
                         </div>
                       </Reveal>
                     ))}

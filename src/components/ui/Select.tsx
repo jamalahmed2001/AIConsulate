@@ -10,7 +10,7 @@ export function Select({ className = "", error, options, placeholder, ...props }
   return (
     <div className="space-y-1">
       <select
-        className={`ring-brand-300 w-full rounded-[var(--radius-md)] border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:ring-4 ${className}`}
+        className={`ring-brand-300 w-full rounded-[var(--radius-md)] border border-border bg-surface px-3 py-2 text-sm text-fg outline-none focus:ring-4 ${className}`}
         {...props}
       >
         {placeholder && (

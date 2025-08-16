@@ -28,6 +28,13 @@ export const env = createEnv({
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
     CONTACT_RECIPIENT: z.string().email().optional(),
+    // LLM configuration
+    LLM_PROVIDER: z.string().optional(),
+    LLM_API_KEY: z.string().optional(),
+    OPENAI_API_KEY: z.string().optional(),
+    OPENROUTER_API_KEY: z.string().optional(),
+    LLM_BASE_URL: z.string().url().optional(),
+    LLM_MODEL: z.string().optional(),
   },
 
   /**
@@ -61,6 +68,13 @@ export const env = createEnv({
     SMTP_PASS: process.env.SMTP_PASS,
     CONTACT_RECIPIENT: process.env.CONTACT_RECIPIENT,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    // LLM
+    LLM_PROVIDER: process.env.LLM_PROVIDER,
+    LLM_API_KEY: process.env.LLM_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+    LLM_BASE_URL: process.env.LLM_BASE_URL,
+    LLM_MODEL: process.env.LLM_MODEL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

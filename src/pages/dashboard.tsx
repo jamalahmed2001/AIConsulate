@@ -80,12 +80,12 @@ export default function Dashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "scheduled": return "text-blue-700 bg-blue-50 border-blue-200";
-      case "confirmed": return "text-green-700 bg-green-50 border-green-200";
-      case "cancelled": return "text-red-700 bg-red-50 border-red-200";
-      case "completed": return "text-gray-700 bg-gray-50 border-gray-200";
-      case "no_show": return "text-orange-700 bg-orange-50 border-orange-200";
-      default: return "text-gray-700 bg-gray-50 border-gray-200";
+      case "scheduled": return "text-blue-700 bg-blue-50 border-blue-200 dark:text-blue-300 dark:bg-blue-900/30 dark:border-blue-700/30";
+      case "confirmed": return "text-green-700 bg-green-50 border-green-200 dark:text-green-300 dark:bg-green-900/30 dark:border-green-700/30";
+      case "cancelled": return "text-red-700 bg-red-50 border-red-200 dark:text-red-300 dark:bg-red-900/30 dark:border-red-700/30";
+      case "completed": return "text-muted bg-surface-2 border-border";
+      case "no_show": return "text-orange-700 bg-orange-50 border-orange-200 dark:text-orange-300 dark:bg-orange-900/30 dark:border-orange-700/30";
+      default: return "text-muted bg-surface-2 border-border";
     }
   };
 
@@ -117,7 +117,7 @@ export default function Dashboard() {
       <Container className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
+          <p className="mt-2 text-muted">Loading...</p>
         </div>
       </Container>
     );
@@ -128,7 +128,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-2">
       <PageHeader
         title="Dashboard"
         subtitle="Welcome to your personal dashboard"
@@ -141,15 +141,15 @@ export default function Dashboard() {
             <h2 className="mb-4 text-xl font-semibold">User Profile</h2>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Name</p>
+                <p className="text-sm text-muted">Name</p>
                 <p className="font-medium">{session.user.name ?? "Not set"}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Email</p>
+                <p className="text-sm text-muted">Email</p>
                 <p className="font-medium">{session.user.email}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Total Appointments</p>
+                <p className="text-sm text-muted">Total Appointments</p>
                 <p className="font-medium">{appointments.length}</p>
               </div>
             </div>
@@ -168,16 +168,16 @@ export default function Dashboard() {
             <h2 className="mb-4 text-xl font-semibold">AI Credits</h2>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Current Balance</p>
+                <p className="text-sm text-muted">Current Balance</p>
                 <p className="text-3xl font-bold text-brand-600">
                   {credits?.balance ?? 0}
                 </p>
               </div>
               {subscription?.active && (
                 <div>
-                  <p className="text-sm text-gray-500">Subscription</p>
+                  <p className="text-sm text-muted">Subscription</p>
                   <p className="font-medium">{subscription.planName}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted">
                     Renews {subscription.currentPeriodEnd ? new Date(subscription.currentPeriodEnd).toLocaleDateString() : "N/A"}
                   </p>
                 </div>
@@ -229,23 +229,23 @@ export default function Dashboard() {
             <h2 className="mb-4 text-xl font-semibold">Account Status</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">Status</span>
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                <span className="text-sm text-muted">Status</span>
+                <span className="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-300">
                   Active
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">Email Verified</span>
+                <span className="text-sm text-muted">Email Verified</span>
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   (session.user as unknown as { emailVerified?: string | null }).emailVerified
-                    ? "bg-green-100 text-green-800"
-                    : "bg-yellow-100 text-yellow-800"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
                 }`}>
                   {(session.user as unknown as { emailVerified?: string | null }).emailVerified ? "Verified" : "Unverified"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">Account Type</span>
+                <span className="text-sm text-muted">Account Type</span>
                 <span className="text-sm font-medium">
                   {subscription?.active ? "Premium" : "Free"}
                 </span>
@@ -260,7 +260,7 @@ export default function Dashboard() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Upcoming Appointments</h2>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted">
                 {upcomingAppointments.length} of {appointments.filter(apt => new Date(apt.startTime) >= now).length}
               </span>
             </div>
@@ -269,15 +269,15 @@ export default function Dashboard() {
               <div className="space-y-3">
                 {Array.from({ length: 3 }, (_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-surface-2 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-surface-2 rounded w-1/2"></div>
                   </div>
                 ))}
               </div>
             ) : upcomingAppointments.length === 0 ? (
               <div className="text-center py-8">
                 <div className="text-4xl mb-2">📅</div>
-                <p className="text-gray-500 mb-4">No upcoming appointments</p>
+                <p className="text-muted mb-4">No upcoming appointments</p>
                 <CTA href="/book" size="sm">
                   Book Your First Session
                 </CTA>
@@ -298,7 +298,7 @@ export default function Dashboard() {
                         <p className="text-xs opacity-75">{formatDateTime(appointment.startTime)}</p>
                         <p className="text-xs opacity-75">{appointment.service.duration} minutes</p>
                       </div>
-                      <span className="text-xs px-2 py-1 rounded-full bg-white/50 border">
+                      <span className="text-xs px-2 py-1 rounded-full bg-surface/80 border">
                         {appointment.status.replace('_', ' ').toUpperCase()}
                       </span>
                     </div>
@@ -306,7 +306,7 @@ export default function Dashboard() {
                 ))}
                 {appointments.filter(apt => new Date(apt.startTime) >= now).length > 3 && (
                   <div className="text-center pt-2">
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted">
                       +{appointments.filter(apt => new Date(apt.startTime) >= now).length - 3} more appointments
                     </p>
                   </div>
@@ -319,7 +319,7 @@ export default function Dashboard() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Recent Appointments</h2>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted">
                 {recentAppointments.length} of {appointments.filter(apt => new Date(apt.startTime) < now).length}
               </span>
             </div>
@@ -328,15 +328,15 @@ export default function Dashboard() {
               <div className="space-y-3">
                 {Array.from({ length: 3 }, (_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-surface-2 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-surface-2 rounded w-1/2"></div>
                   </div>
                 ))}
               </div>
             ) : recentAppointments.length === 0 ? (
               <div className="text-center py-8">
                 <div className="text-4xl mb-2">📋</div>
-                <p className="text-gray-500">No past appointments</p>
+                <p className="text-muted">No past appointments</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -354,7 +354,7 @@ export default function Dashboard() {
                         <p className="text-xs opacity-75">{formatDateTime(appointment.startTime)}</p>
                         <p className="text-xs opacity-75">{appointment.service.duration} minutes</p>
                       </div>
-                      <span className="text-xs px-2 py-1 rounded-full bg-white/50 border">
+                      <span className="text-xs px-2 py-1 rounded-full bg-surface/80 border">
                         {appointment.status.replace('_', ' ').toUpperCase()}
                       </span>
                     </div>
@@ -362,7 +362,7 @@ export default function Dashboard() {
                 ))}
                 {appointments.filter(apt => new Date(apt.startTime) < now).length > 3 && (
                   <div className="text-center pt-2">
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted">
                       +{appointments.filter(apt => new Date(apt.startTime) < now).length - 3} more past appointments
                     </p>
                   </div>
@@ -378,14 +378,14 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold">All My Appointments</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted">
                   View and manage all your appointments in one place
                 </p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
                   <div className="text-2xl font-bold text-brand-600">{appointments.length}</div>
-                  <div className="text-xs text-gray-500">Total Bookings</div>
+                  <div className="text-xs text-muted">Total Bookings</div>
                 </div>
                 <CTA href="/admin/bookings" tone="secondary">
                   View All Appointments
@@ -399,7 +399,7 @@ export default function Dashboard() {
         {process.env.NODE_ENV === 'development' && (
           <Card className="mt-6 p-6">
             <h2 className="mb-4 text-xl font-semibold">Session Details (Dev Only)</h2>
-            <pre className="overflow-auto rounded bg-gray-100 p-4 text-xs">
+            <pre className="overflow-auto rounded bg-surface-2 p-4 text-xs">
               {JSON.stringify(session, null, 2)}
             </pre>
           </Card>

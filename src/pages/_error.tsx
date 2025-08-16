@@ -20,7 +20,7 @@ Error.getInitialProps = ({ res, err }: NextPageContext) => {
       ?.statusCode === "number"
       ? (err as unknown as { statusCode?: number }).statusCode
       : 404);
-  return { statusCode } as { statusCode?: number };
+  return { statusCode };
 };
 
 export default Error;

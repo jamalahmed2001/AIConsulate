@@ -170,13 +170,13 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
               <span className="text-2xl">📅</span>
               Google Calendar Integration
             </h3>
-            <p className="text-sm text-neutral-600 mt-1">
+            <p className="text-sm text-muted mt-1">
               Sync your appointments with Google Calendar for better scheduling
             </p>
           </div>
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded-full ${
-              settings.isConnected ? 'bg-green-500' : 'bg-gray-300'
+              settings.isConnected ? 'bg-green-500' : 'bg-surface-2 border border-border'
             }`}></div>
             <span className="text-sm font-medium">
               {settings.isConnected ? 'Connected' : 'Not Connected'}
@@ -186,12 +186,12 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
 
         {!settings.isConnected ? (
           <div className="space-y-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-900 mb-2">Connect your Google Calendar</h4>
-              <p className="text-sm text-blue-800 mb-3">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 dark:bg-blue-900/30 dark:border-blue-700/30">
+              <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">Connect your Google Calendar</h4>
+              <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
                 Automatically sync your appointments to Google Calendar so you never miss a booking.
               </p>
-              <ul className="text-sm text-blue-700 mb-4 space-y-1">
+              <ul className="text-sm text-blue-700 dark:text-blue-300 mb-4 space-y-1">
                 <li>• Automatic appointment creation in Google Calendar</li>
                 <li>• Real-time sync when bookings are made</li>
                 <li>• Optional two-way sync to prevent double-booking</li>
@@ -209,15 +209,15 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 dark:bg-green-900/30 dark:border-green-700/30">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium text-green-900">✅ Connected to Google Calendar</h4>
+                  <h4 className="font-medium text-green-900 dark:text-green-300">✅ Connected to Google Calendar</h4>
                   {settings.userEmail && (
-                    <p className="text-sm text-green-700">Account: {settings.userEmail}</p>
+                    <p className="text-sm text-green-700 dark:text-green-300">Account: {settings.userEmail}</p>
                   )}
                   {settings.lastSync && (
-                    <p className="text-xs text-green-600">
+                    <p className="text-xs text-green-600 dark:text-green-400">
                       Last synced: {new Date(settings.lastSync).toLocaleString()}
                     </p>
                   )}
@@ -267,7 +267,7 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
           <div className="space-y-4">
             {/* Calendar Selection */}
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Target Calendar
               </label>
               <Select
@@ -281,14 +281,14 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
                   }))
                 ]}
               />
-              <p className="text-xs text-neutral-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Choose which Google Calendar to sync appointments to
               </p>
             </div>
 
             {/* Sync Direction */}
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
+              <label className="block text-sm font-medium text-fg mb-2">
                 Sync Direction
               </label>
               <Select
@@ -299,7 +299,7 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
                   { value: 'two-way', label: 'Two-way (Bidirectional sync)' }
                 ]}
               />
-              <p className="text-xs text-neutral-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 {settings.syncDirection === 'one-way' 
                   ? 'Appointments will only be sent to Google Calendar'
                   : 'Sync both ways to prevent double-booking (coming soon)'
@@ -310,10 +310,10 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
             {/* Auto Sync Toggle */}
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-neutral-700">
+                <label className="text-sm font-medium text-fg">
                   Automatic Sync
                 </label>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-muted">
                   Automatically sync when appointments are created or updated
                 </p>
               </div>
@@ -324,7 +324,7 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
                   onChange={(e) => handleSettingChange('autoSync', e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                <div className="w-11 h-6 bg-surface-2 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
               </label>
             </div>
           </div>
@@ -334,7 +334,7 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
             <div className="flex items-center justify-between">
               <div>
                 <h4 className="font-medium">Manual Sync</h4>
-                <p className="text-sm text-neutral-600">
+                <p className="text-sm text-muted">
                   Sync all appointments to Google Calendar now
                 </p>
               </div>
@@ -356,21 +356,21 @@ export function GoogleCalendarIntegration({ className = "" }: GoogleCalendarInte
         <div className="space-y-3">
           <div className="border-l-4 border-blue-500 pl-4">
             <h4 className="font-medium text-sm">Setup Requirements</h4>
-            <p className="text-xs text-neutral-600 mt-1">
+            <p className="text-xs text-muted mt-1">
                                 You&apos;ll need to authorize this application to access your Google Calendar. 
               Your data is never shared with third parties.
             </p>
           </div>
           <div className="border-l-4 border-green-500 pl-4">
             <h4 className="font-medium text-sm">Sync Process</h4>
-            <p className="text-xs text-neutral-600 mt-1">
+            <p className="text-xs text-muted mt-1">
               When enabled, new appointments will automatically appear in your selected Google Calendar 
               with all relevant details including customer information and meeting duration.
             </p>
           </div>
           <div className="border-l-4 border-yellow-500 pl-4">
             <h4 className="font-medium text-sm">Privacy & Security</h4>
-            <p className="text-xs text-neutral-600 mt-1">
+            <p className="text-xs text-muted mt-1">
               We use secure OAuth 2.0 authentication and only request minimal permissions needed 
               for calendar integration. You can revoke access at any time.
             </p>
